@@ -6,7 +6,7 @@ commercially with attribution (https://api.met.no/doc/TermsOfService).
 Values are shown as MET Norway publishes them; we only pick and count, we do not
 make our own forecast (snow days = days whose 6-hour symbol is a snow symbol).
 """
-import json, os, time, urllib.error, urllib.request
+import json, math, os, time, urllib.error, urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone, timedelta
 
@@ -64,6 +64,49 @@ def summarize(d, alt):
     }
 
 
+AMEDAS = "https://www.jma.go.jp/bosai/amedas/"
+MAX_KM = 20
+
+
+def get_json(url):
+    with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": UA}), timeout=30) as res:
+        return json.load(res)
+
+
+def amedas_snow(resorts):
+    """気象庁アメダスの積雪深（観測値）を、各スキー場から20km以内で一番近い観測点の値として付ける。
+    観測値をそのまま出すだけで、予想や補正はしない（気象業務法の予報業務に当たらないように）。
+    取得に失敗したら空を返し、天気の更新自体は止めない。"""
+    try:
+        table = get_json(AMEDAS + "const/amedastable.json")
+        latest = urllib.request.urlopen(urllib.request.Request(AMEDAS + "data/latest_time.txt", headers={"User-Agent": UA}), timeout=30).read().decode().strip()
+        t = datetime.fromisoformat(latest).replace(minute=0, second=0)   # 積雪は毎正時の観測
+        obs = get_json(AMEDAS + f"data/map/{t.strftime('%Y%m%d%H%M%S')}.json")
+    except Exception as e:
+        print("amedas skipped:", e)
+        return {}, None
+    pts = []
+    for code, v in obs.items():
+        if "snow" not in v or v["snow"][0] is None or v["snow"][1] != 0:   # 品質フラグ0（正常）だけ使う
+            continue
+        st = table.get(code)
+        if not st:
+            continue
+        pts.append((st["lat"][0] + st["lat"][1] / 60, st["lon"][0] + st["lon"][1] / 60, st["alt"], st["kjName"], st["enName"],
+                    v["snow"][0], (v.get("snow24h") or [None, 1])))
+    out = {}
+    for r in resorts:
+        best, bd = None, 1e9
+        for p in pts:
+            d = math.hypot((r["lat"] - p[0]) * 111, (r["lng"] - p[1]) * 91)
+            if d < bd:
+                best, bd = p, d
+        if best and bd <= MAX_KM:
+            s24 = best[6][0] if best[6][1] == 0 else None
+            out[r["id"]] = {"s": best[5], "s24": s24, "n": best[3], "ne": best[4], "km": round(bd), "alt": best[2]}
+    return out, t.isoformat(timespec="minutes")
+
+
 def main():
     resorts = [r for r in json.load(open(os.path.join(DATA, "resorts.json"), encoding="utf-8"))
                if r.get("lat") is not None and r.get("lng") is not None]
@@ -81,10 +124,12 @@ def main():
     failed = len(resorts) - len(out)
     if len(out) < len(resorts) * 0.8:
         raise SystemExit(f"only {len(out)}/{len(resorts)} fetched; keeping previous file")
-    json.dump({"updatedAt": datetime.now(JST).isoformat(timespec="minutes"), "source": "MET Norway", "wx": out},
+    am, am_at = amedas_snow(resorts)
+    json.dump({"updatedAt": datetime.now(JST).isoformat(timespec="minutes"), "source": "MET Norway", "wx": out,
+               "amedas": am, "amedasAt": am_at},
               open(os.path.join(DATA, "weather.json"), "w", encoding="utf-8"),
               ensure_ascii=False, separators=(",", ":"))
-    print(f"weather: {len(out)} ok, {failed} failed")
+    print(f"weather: {len(out)} ok, {failed} failed | amedas snow: {len(am)} resorts")
 
 
 if __name__ == "__main__":

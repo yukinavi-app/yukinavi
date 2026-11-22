@@ -520,6 +520,10 @@ ol.gear-list .gear-item::before{counter-increment:gear;content:counter(gear);fon
           <div class="pill-row" id="pillTransport"></div>
         </div>
         <div class="q-block">
+          <div class="q-label"><span data-t="qWhen"></span> <span class="q-opt" data-t="qOptional"></span></div>
+          <div class="pill-row" id="pillWhen"></div>
+        </div>
+        <div class="q-block">
           <div class="q-label"><span data-t="qMust"></span> <span class="q-opt" data-t="qOptional"></span></div>
           <div class="pill-row" id="pillMust"></div>
         </div>
@@ -926,6 +930,9 @@ const STRINGS = {
     qBudget:"リフト券（大人1日）の予算は？",
     budget4:"〜4,000円", budget6:"〜6,000円", budget8:"〜8,000円", budgetAny:"こだわらない",
     qTransport:"どうやって行く？",
+    qWhen:"いつ行く？",
+    whenThisWeekend:(m,d)=>`今週末（${m}/${d}）`, whenNextWeekend:(m,d)=>`来週末（${m}/${d}）`, whenNewYear:()=>"年末年始", whenJanuary:()=>"1月", whenFebruary:()=>"2月以降",
+    matchOpenOn:(m,d)=>`${m}/${d}は営業予定`, matchOpenUnknown:"今季の営業日は未発表",
     transCar:"車で", transPublic:"電車・バスで",
     qMust:"これは欲しい！",
     qOptional:"（任意・いくつでも）",
@@ -961,6 +968,11 @@ const STRINGS = {
     another:"別の提案を見る",
     seeDetail:"詳しく見る",
     ctaStay:"この近くの宿を探す",
+    amedasLabel:(n,km,alt)=>`近くの気象庁観測点（${n}・約${km}km・標高${alt}m）の積雪`,
+    amedas24:(v)=>`24時間で＋${v}cm`,
+    amedasShort:(v)=>`近くの観測点 積雪${v}cm`,
+    amedasLower:(d)=>`ゲレンデの麓より約${d}m低い地点です`,
+    amedasCredit:`出典：<a href="https://www.jma.go.jp/bosai/amedas/" target="_blank" rel="noopener">気象庁ホームページ</a>（アメダスの観測値を加工して作成）`,
     coursesOnlyLabel:"コース数",
     liftsOnlyLabel:"リフト・ゴンドラの数",
     openAlertTitle:(n)=>`${n}が今日オープン`,
@@ -1166,6 +1178,9 @@ const STRINGS = {
     qBudget:"Budget for an adult day pass?",
     budget4:"Up to ¥4,000", budget6:"Up to ¥6,000", budget8:"Up to ¥8,000", budgetAny:"No limit",
     qTransport:"How will you get there?",
+    qWhen:"When are you going?",
+    whenThisWeekend:(m,d)=>`This weekend (${m}/${d})`, whenNextWeekend:(m,d)=>`Next weekend (${m}/${d})`, whenNewYear:()=>"New Year holidays", whenJanuary:()=>"January", whenFebruary:()=>"February or later",
+    matchOpenOn:(m,d)=>`Open on ${m}/${d} (planned)`, matchOpenUnknown:"Season dates not announced",
     transCar:"By car", transPublic:"By train / bus",
     qMust:"Must-haves",
     qOptional:"(optional, pick any)",
@@ -1201,6 +1216,11 @@ const STRINGS = {
     another:"Show another option",
     seeDetail:"See full details",
     ctaStay:"Find a place to stay nearby",
+    amedasLabel:(n,km,alt)=>`Snow depth at the nearest JMA station (${n}, ~${km}km away, ${alt}m)`,
+    amedas24:(v)=>`+${v}cm in 24 hours`,
+    amedasShort:(v)=>`${v}cm snow at nearby station`,
+    amedasLower:(d)=>`About ${d}m lower than the resort base`,
+    amedasCredit:`Source: <a href="https://www.jma.go.jp/bosai/amedas/" target="_blank" rel="noopener">Japan Meteorological Agency</a> (AMeDAS observations, processed by YukiNavi)`,
     coursesOnlyLabel:"Runs",
     liftsOnlyLabel:"Lifts",
     openAlertTitle:(n)=>`${n} opens today`,
@@ -1273,7 +1293,7 @@ function showToast(msg){
   el.textContent = msg; el.classList.add("on");
   clearTimeout(el._t); el._t = setTimeout(()=>el.classList.remove("on"), 2800);
 }
-const wiz = {block:null, prefIdx:null, trip:null, level:null, budget:null, transport:null, must:new Set(), lastId:null, shown:[]};
+const wiz = {block:null, prefIdx:null, trip:null, level:null, budget:null, transport:null, when:null, must:new Set(), lastId:null, shown:[]};
 const terrainColors = ["var(--pg)","var(--pr)","var(--pk)"];
 // 検索カード用：コース比率のミニバー＋初心者コースの割合（初心者が一番気にする数字）
 function miniTerrain(r){
@@ -1360,6 +1380,42 @@ function terrIdx(){ return Math.max(0, (wiz.level ?? 1) - 1); }
 const BUDGET_OPTS = ["budget4","budget6","budget8","budgetAny"];
 const BUDGET_LIMITS = [4000, 6000, 8000, null];
 const TRANSPORT_OPTS = ["transCar","transPublic"];
+// いつ行く？：今日から計算した候補日。選んだ日に営業している（予定の）スキー場だけで診断する
+function isoOf(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; }
+function whenOptions(){
+  const now = new Date(); now.setHours(0,0,0,0);
+  const sat = new Date(now); const dow = now.getDay();
+  sat.setDate(now.getDate() + (dow===0 ? -1 : (6 - dow)));   // 今週の土曜（日曜なら昨日の土曜＝今週末）
+  const thisWk = dow===0 ? now : sat;
+  const nextWk = new Date(sat); nextWk.setDate(sat.getDate() + 7);
+  const y = now.getMonth() >= 6 ? now.getFullYear() : now.getFullYear() - 1;   // シーズンの始まりの年
+  const opts = [
+    {key:"whenThisWeekend", date:thisWk}, {key:"whenNextWeekend", date:nextWk},
+    {key:"whenNewYear", date:new Date(y, 11, 30)}, {key:"whenJanuary", date:new Date(y+1, 0, 16)}, {key:"whenFebruary", date:new Date(y+1, 1, 13)},
+  ];
+  return opts.filter(o=>o.date >= now).filter((o,i,a)=>a.findIndex(x=>isoOf(x.date)===isoOf(o.date))===i);
+}
+function buildWhenPills(){
+  const el = document.getElementById("pillWhen");
+  const opts = whenOptions();
+  if(wiz.when && !opts.some(o=>isoOf(o.date)===wiz.when)) wiz.when = null;
+  el.innerHTML = opts.map(o=>{
+    const iso = isoOf(o.date);
+    return `<button type="button" class="pill ${wiz.when===iso?"sel":""}" data-when="${iso}">${t(o.key)(o.date.getMonth()+1, o.date.getDate())}</button>`;
+  }).join("");
+  el.querySelectorAll(".pill").forEach(btn=>btn.addEventListener("click", ()=>{
+    wiz.when = wiz.when===btn.dataset.when ? null : btn.dataset.when;   // もう一度押すと未定に戻る
+    el.querySelectorAll(".pill").forEach(b=>b.classList.toggle("sel", b.dataset.when===wiz.when));
+  }));
+}
+// その日に営業しているか：true＝予定あり／false＝まだオープン前か終了後／null＝今季の日程が未発表
+function openOnDate(r, iso){
+  if(r.winterClosed) return false;
+  if(r.openDate && r.openDate > iso) return false;
+  if(r.closeDate && r.closeDate < iso) return false;
+  if(r.openDate || r.alreadyOpen) return true;
+  return null;
+}
 const MUST_ALL = ["mustRental","mustSchool","mustOnline","mustNight","mustOnsen","mustKids","mustStudent","mustBig","mustEnglishOk","mustEnglish"];
 // 英語まわりは日本語で使う人には不要なので、英語表示のときだけ出す
 const MUST_EN_ONLY = ["mustEnglish","mustEnglishOk"];
@@ -1525,6 +1581,7 @@ function applyStaticText(){
   if(wiz.budget!==null) document.querySelector(`#pillBudget .pill[data-idx="${wiz.budget}"]`)?.classList.add("sel");
   if(wiz.transport!==null) document.querySelector(`#pillTransport .pill[data-idx="${wiz.transport}"]`)?.classList.add("sel");
   buildMustPills();
+  buildWhenPills();
   updateSubmitState();
 }
 
@@ -1556,6 +1613,9 @@ function applyWeatherFile(o){
   // 12時間以上前のデータは出さない（取得が止まっても古い天気を見せない）
   if(!(Date.now() - asOf < 12*3600000)) return false;
   RESORTS.forEach(r=>applyWeather(r, o.wx[r.id], asOf));
+  // 気象庁アメダスの積雪（観測値）。近くの観測点の値で、スキー場の値ではない
+  const amAt = o.amedasAt ? Date.parse(o.amedasAt) : null;
+  RESORTS.forEach(r=>{ r.amedas = (o.amedas && o.amedas[r.id] && o.amedas[r.id].s > 0) ? o.amedas[r.id] : null; r.amedasAt = amAt; });
   return true;
 }
 function loadWeatherCache(){
@@ -1721,6 +1781,7 @@ function initMap(){
     attribution:'<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank" rel="noopener">国土地理院</a>'
   }).addTo(m);
   L.tileLayer("https://cyberjapandata.gsi.go.jp/xyz/hillshademap/{z}/{x}/{y}.png", {maxZoom:18, maxNativeZoom:16, opacity:0.28}).addTo(m);
+  m.attributionControl.setPrefix(false);   // 「Leaflet」表記は不要（国土地理院の出典は残す）
   mapState.map = m;
   mapState.layer = L.layerGroup().addTo(m);
   // 検索欄・フィルター（上）と件数表示（下）に隠れないよう、余白を取って全国のスキー場を収める
@@ -2061,6 +2122,7 @@ function openDetail(id){
       ${r.courses!=null||r.lifts!=null ? `<div class="info-card"><div class="big">${r.courses!=null?`<span class="num">${r.courses}</span><span class="unit">${t("unitCourses")}</span>`:""}${r.courses!=null&&r.lifts!=null?" ":""}${r.lifts!=null?`<span class="num">${r.lifts}</span><span class="unit">${t("unitLifts")}</span>`:""}</div><div class="label">${r.courses!=null && r.lifts!=null ? t("coursesLiftsLabel") : r.courses!=null ? t("coursesOnlyLabel") : t("liftsOnlyLabel")}</div></div>` : ""}
       ${hasWx ? `
       <div class="info-card"><div class="big">${weatherIcon(wx(r).condJa)} <span class="num">${nv(wx(r).tempC,"°C")}</span></div><div class="label">${r.weatherAsOf ? `<span${weatherStale(r) ? ' style="color:#C2410C"' : ""}>${t("cachedWeather")(new Date(r.weatherAsOf))}</span><br>` : ""}${wx(r).elevation!=null ? t("tempAtLabel")(wx(r).elevation)+SEP() : ""}${cond}${SEP()}${t("windLabel")} <span class="num">${nv(wx(r).wind,"km/h")}</span><br><span class="wx-credit">${t("wxCredit")}</span></div></div>
+      ${r.amedas ? `<div class="info-card"><div class="big"><span class="num">${r.amedas.s}</span><span class="unit">cm</span></div><div class="label">${t("amedasLabel")(state.lang==="ja" ? r.amedas.n : r.amedas.ne, r.amedas.km, r.amedas.alt)}${r.amedas.s24 ? `<br>${t("amedas24")(r.amedas.s24)}` : ""}${r.base!=null && r.base - r.amedas.alt > 300 ? `<br>${t("amedasLower")(r.base - r.amedas.alt)}` : ""}<br><span class="wx-credit">${t("amedasCredit")}</span></div></div>` : ""}
       ${wx(r).snowDays ? `<div class="info-card"><div class="big"><span class="num">${wx(r).snowDays}</span><span class="unit">${t("snowDaysUnit")}</span></div><div class="label">${t("snow7dLabel")}</div></div>` : ""}
       ` : `<div class="info-card wx-pending"><div class="big">${icon("cloud",20)}</div><div class="label">${WX_DONE ? t("wxFailed") : t("weatherLoading")+"…"}</div></div>`}
       <div class="info-card"><div class="big ${r.liftAdult!=null?"num":"soft"}">${r.liftAdult!=null ? yen(r.liftAdult) : t("statSeeOfficial")}</div><div class="label">${t("adultDayLabel")}${r.priceSeason ? ` <span class="num">(${r.priceSeason})</span>` : ""}<br>${r.liftStudent!=null ? `${t("studentYouth")} <span class="num">${r.liftStudent===0 ? t("freeLabel") : "¥"+r.liftStudent.toLocaleString()}</span>` : ""}</div></div>
@@ -2248,7 +2310,7 @@ function scoreResort(r, pref, levelIdx, isDayTrip){
 function computeRanking(){
   const pref = PREFECTURES[wiz.prefIdx];
   const isDayTrip = wiz.trip===0;
-  return RESORTS.filter(r=>r.lat!=null && !r.winterClosed).map(r=>({r, s:scoreResort(r, pref, terrIdx(), isDayTrip)})).sort((a,b)=>b.s-a.s).map(x=>x.r);
+  return RESORTS.filter(r=>r.lat!=null && !r.winterClosed && !(wiz.when && openOnDate(r, wiz.when)===false)).map(r=>({r, s:scoreResort(r, pref, terrIdx(), isDayTrip) + (wiz.when ? (openOnDate(r, wiz.when) ? 10 : -15) : 0)})).sort((a,b)=>b.s-a.s).map(x=>x.r);
 }
 
 // 診断結果：現地の天気と、7日間の雪予報を1行で
@@ -2257,7 +2319,8 @@ function recoWeatherLine(r){
   if(w.tempC==null) return "";
   const cond = state.lang==="ja" ? w.condJa : w.condEn;
   const asOf = r.weatherAsOf ? `<span class="rw-asof">${t("cachedWeather")(new Date(r.weatherAsOf))}</span>` : "";
-  return `<div class="reco-wx"><span class="rw-now">${weatherIcon(w.condJa)}<span class="num">${w.tempC}°C</span> ${cond||""}</span>${snowBadge(r)}${asOf}</div>`;
+  const am = r.amedas ? `<span class="rw-now">${icon("snow",14)}${t("amedasShort")(r.amedas.s)}</span>` : "";
+  return `<div class="reco-wx"><span class="rw-now">${weatherIcon(w.condJa)}<span class="num">${w.tempC}°C</span> ${cond||""}</span>${am}${snowBadge(r)}${asOf}</div>`;
 }
 // 診断結果：大きく見せる3つの数字
 function recoStats(r, fromKm){
@@ -2285,6 +2348,7 @@ function recoMatches(r, fromKm){
   out.push([limit==null ? "ok" : r.liftAdult==null ? "check" : r.liftAdult<=limit ? "ok" : "no", t(BUDGET_OPTS[wiz.budget])]);
   if(wiz.transport===1){ const ok = transitOk(r); out.push([ok===true ? "ok" : ok===false ? "no" : "check", t(TRANSPORT_OPTS[1])]); }
   else out.push(["ok", t(TRANSPORT_OPTS[0])]);
+  if(wiz.when){ const [, m, d] = wiz.when.split("-").map(Number); const o = openOnDate(r, wiz.when); out.push([o ? "ok" : "check", o ? t("matchOpenOn")(m,d) : t("matchOpenUnknown")]); }
   [...wiz.must].forEach(k=>{ const v = mustValue(r,k); out.push([v===true ? "ok" : v===false ? "no" : "check", t(k)]); });
   const ic = {ok:icon("check",14), check:icon("alert",14), no:icon("alert",14)};
   const sr = {ok:t("matchOk"), check:t("matchCheck"), no:t("matchNo")};
@@ -2296,6 +2360,15 @@ function renderRecommendation(){
   const ranked = computeRanking();
   const notYetShown = ranked.find(r=>!wiz.shown.includes(r.id)) || ranked[0];
   wiz.lastId = notYetShown.id;
+  // アプリ版：診断を3回使った人にだけ、Apple公式の評価ダイアログを出す（表示回数はAppleが年3回までに制限）
+  if(IS_NATIVE){
+    try{
+      const n = Number(localStorage.getItem("yukinavi_diag_count") || 0) + 1;
+      localStorage.setItem("yukinavi_diag_count", String(n));
+      const IR = window.Capacitor.Plugins && window.Capacitor.Plugins.InAppReview;
+      if(n === 3 && IR) setTimeout(()=>IR.requestReview().catch(()=>{}), 2500);
+    }catch(e){}
+  }
   if(window.track) track("diagnosis_result", {resort: notYetShown.id, level: wiz.level, trip: wiz.trip, transport: wiz.transport, lang: state.lang});
   wiz.shown.push(notYetShown.id);
   if(wiz.shown.length > RESORTS.length) wiz.shown = [notYetShown.id];
@@ -2404,7 +2477,7 @@ function bindA2hs(){
 }
 
 function resetWizard(){
-  wiz.block=null; wiz.prefIdx=null; wiz.trip=null; wiz.level=null; wiz.budget=null; wiz.transport=null; wiz.must=new Set(); wiz.lastId=null; wiz.shown=[];
+  wiz.block=null; wiz.prefIdx=null; wiz.trip=null; wiz.level=null; wiz.budget=null; wiz.transport=null; wiz.when=null; wiz.must=new Set(); wiz.lastId=null; wiz.shown=[];
   document.getElementById("wizardResult").hidden = true;
   document.getElementById("wizardResult").innerHTML = "";
   document.getElementById("prefBlockWrap").hidden = true;
