@@ -25,7 +25,7 @@ def klook_search(q, place, rid):
 
 
 A8_LINKMGR = '<script src="https://statics.8me.jp/a8link/a8linkmgr.js"></script><script>a8linkmgr({"config_id": "6ixko2yPeJmsYAuUlTIr"});</script>'  # A8の自動リンク変換（提携済み案件のリンクだけを書き換える）
-RAKUTEN_ID = "575c1e8f.95c040c9.575c1e90.5e7d0fd7"
+RAKUTEN_ID = "59db25da.f3366089.59db25db.43c478c4"
 
 PREF_ORDER = ["北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県", "茨城県", "栃木県", "群馬県", "埼玉県",
               "千葉県", "東京都", "神奈川県", "新潟県", "富山県", "石川県", "福井県", "山梨県", "長野県", "岐阜県", "静岡県",

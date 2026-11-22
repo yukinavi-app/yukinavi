@@ -686,7 +686,7 @@ async function loadAllResorts(){
   }
 }
 // アフィリエイト：楽天は任意のURLを公式の汎用リンク（hgc）で包むと成果計測される
-const AFF = { rakuten: "575c1e8f.95c040c9.575c1e90.5e7d0fd7" };
+const AFF = { rakuten: "59db25da.f3366089.59db25db.43c478c4" };
 function rakutenAff(url){
   const e = encodeURIComponent(url);
   return `https://hb.afl.rakuten.co.jp/hgc/${AFF.rakuten}/?pc=${e}&m=${e}`;
@@ -741,7 +741,7 @@ const GEAR_PLAN = [
 ];
 
 const GEAR_CATEGORIES = [
-  {id:"bag", ic:"backpack", ja:"バッグ", en:"Bag", real:true, productJa:"VOLKL RACE BOOT PACK（ブーツ用バッグ）", productEn:"VOLKL RACE BOOT PACK (boot bag)", url:"https://hb.afl.rakuten.co.jp/ichiba/575c1e8f.95c040c9.575c1e90.5e7d0fd7/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftanabesp%2Fcd63643%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ%3D%3D"},
+  {id:"bag", ic:"backpack", ja:"バッグ", en:"Bag", real:true, productJa:"VOLKL RACE BOOT PACK（ブーツ用バッグ）", productEn:"VOLKL RACE BOOT PACK (boot bag)", url:"https://hb.afl.rakuten.co.jp/ichiba/59db25da.f3366089.59db25db.43c478c4/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Ftanabesp%2Fcd63643%2F&link_type=picttext&ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiIyNDB4MjQwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjEsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ%3D%3D"},
   {id:"boots", ic:"boots", ja:"ブーツ", en:"Boots", real:true, productJa:"DALBELLO DRS WC S", productEn:"DALBELLO DRS WC S", url:"https://a.r10.to/hPs2xw"},
   {id:"skis", ic:"ski", ja:"板", en:"Skis", real:true, productJa:"VOLKL RACETIGER SL 165cm + RMotionT12 ビンディングセット", productEn:"VOLKL RACETIGER SL 165cm + RMotionT12 binding set", url:"https://a.r10.to/hYsRXv"},
   {id:"poles", ic:"poles", ja:"ストック", en:"Poles", real:true, productJa:"SINANO フリーFAST-α", productEn:"SINANO Free FAST-α", url:"https://a.r10.to/h596M2"},
