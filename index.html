@@ -24,7 +24,9 @@
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<!-- フォントは画面の表示を止めないよう後から読み込む（読み込むまではシステムフォント） -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Barlow+Condensed:wght@500;600;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Barlow+Condensed:wght@500;600;700&display=swap"></noscript>
 <link rel="stylesheet" href="vendor/leaflet/leaflet.min.css">
 <style>
 :root{
@@ -603,7 +605,10 @@ if(IS_NATIVE) document.documentElement.classList.add("native");
 async function fetchData(path, opts){
   if(IS_NATIVE){
     try{
-      const res = await fetch(SITE_BASE + path + "?t=" + Math.floor(Date.now()/600000), opts);
+      // 電波が弱いと待たされるので、3秒で諦めて同梱データを使う
+      const ctl = new AbortController(); const timer = setTimeout(()=>ctl.abort(), 3000);
+      const res = await fetch(SITE_BASE + path + "?t=" + Math.floor(Date.now()/600000), Object.assign({}, opts, {signal:ctl.signal}));
+      clearTimeout(timer);
       if(res.ok) return res;
     }catch(e){ /* 圏外：同梱データへ */ }
   }
