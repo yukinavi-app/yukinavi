@@ -330,6 +330,7 @@ ol.gear-list .gear-item::before{counter-increment:gear;content:counter(gear);fon
 .gear-item-name{font-weight:700;font-size:14.5px;}
 .gear-item-why{font-size:12.5px;color:var(--text-muted);margin-top:2px;}
 .gear-item .cta-btn{flex:0 0 auto;}
+.gear-btns{display:flex;flex-direction:column;gap:6px;flex:0 0 auto;}
 .info-card .unit{font-family:var(--font-body);font-size:12px;font-weight:500;color:var(--text-muted);margin-left:2px;}
 .meta-access{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .ad-note{font-size:11.5px;color:var(--text-muted);background:var(--surface-2);border-radius:6px;padding:7px 10px;margin:0 0 12px;line-height:1.5;}
@@ -705,6 +706,9 @@ function stayUrl(r){
 }
 function busUrl(r){ return state.lang==="ja" ? rakutenAff("https://travel.rakuten.co.jp/bus/") : klookSearch(`${r.nameEn} bus`, "bus", r.id); }
 function rakutenSearch(keyword){ return rakutenAff(`https://search.rakuten.co.jp/search/mall/${encodeURIComponent(keyword)}/`); }
+// Amazonアソシエイト（検索結果へのリンクにtagを付ける公式の方法）
+const AMAZON_TAG = "schi01-22";
+function amazonSearch(keyword){ return `https://www.amazon.co.jp/s?k=${encodeURIComponent(keyword)}&tag=${AMAZON_TAG}`; }
 
 // レベル別の装備：上から順に「買う順番」
 const GEAR_PLAN = [
@@ -879,7 +883,7 @@ const STRINGS = {
     cachedWeather:(d)=>`${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,"0")}時点`,
     allListLink:"都道府県別の一覧ページ",
     winterClosedNote:"※このスキー場は冬季は営業していません（春〜夏に営業）。",
-    adDisclosure:"このページには広告（アフィリエイトリンク）が含まれます。リンク先での予約・購入により運営者に報酬が入ることがあります。",
+    adDisclosure:"このページには広告（アフィリエイトリンク）が含まれます。リンク先での予約・購入により運営者に報酬が入ることがあります。Amazonのアソシエイトとして、YukiNaviは適格販売により収入を得ています。",
     aboutLink:"運営者情報・プライバシーポリシー",
     guideLink:"スキーの読みもの",
     prepTitle:"おでかけ準備",
@@ -1126,7 +1130,7 @@ const STRINGS = {
     cachedWeather:(d)=>`As of ${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,"0")}`,
     allListLink:"List by prefecture",
     winterClosedNote:"This resort is closed in winter (open spring to summer).",
-    adDisclosure:"This page contains affiliate links. We may earn a commission from bookings or purchases made through them.",
+    adDisclosure:"This page contains affiliate links. We may earn a commission from bookings or purchases made through them. As an Amazon Associate, YukiNavi earns from qualifying purchases.",
     aboutLink:"About & privacy policy",
     guideLink:"Ski guides",
     prepTitle:"Trip prep",
@@ -2082,11 +2086,11 @@ function renderGearTab(){
       ${plan.items.map(it=>`
       <li class="gear-item">
         <div class="gear-item-main"><div class="gear-item-name">${ja?it.ja:it.en}</div><div class="gear-item-why">${ja?it.whyJa:it.whyEn}</div></div>
-        <a class="cta-btn sec" href="${rakutenSearch(it.q)}" target="_blank" rel="noopener sponsored">${ja?"楽天で探す":"Search Rakuten"}</a>
+        <div class="gear-btns"><a class="cta-btn sec" href="${amazonSearch(it.q)}" target="_blank" rel="noopener sponsored">${ja?"Amazonで探す":"Search Amazon"}</a><a class="cta-btn sec" href="${rakutenSearch(it.q)}" target="_blank" rel="noopener sponsored">${ja?"楽天で探す":"Search Rakuten"}</a></div>
       </li>`).join("")}
     </ol>
     ${curated ? `<div class="section-label">${ja?"運営者のおすすめギア":"My recommended gear"}</div><ul class="gear-list gear-curated">${curated}</ul>` : ""}
-    ${ja?"":`<p class="gear-intro" style="margin-top:14px">Rakuten Ichiba is a Japanese shopping site; most shops ship within Japan only.</p>`}`;
+    ${ja?"":`<p class="gear-intro" style="margin-top:14px">Rakuten Ichiba is a Japanese shopping site; most shops ship within Japan only. Amazon.co.jp can deliver to your hotel in Japan.</p>`}`;
 }
 
 function openDetail(id){
