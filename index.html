@@ -517,6 +517,25 @@ ol.gear-list .gear-item::before{counter-increment:gear;content:counter(gear);fon
 @media (prefers-reduced-motion:reduce){.ticket{animation:none;}}
 
 /* gear: owner's picks link straight to the product */
+.pick-table{width:100%;border-collapse:separate;border-spacing:6px 0;margin:0 -6px 4px;table-layout:fixed;width:calc(100% + 12px);}
+.pick-table thead th{background:var(--navy);color:#fff;font-size:13px;font-weight:800;padding:9px 4px;border-radius:8px;}
+.pick-table thead th.pt-mine{background:var(--accent);}
+.pick-table .pt-kind th{text-align:left;font-size:13px;font-weight:800;color:var(--text);padding:14px 2px 6px;}
+.pick-table td{vertical-align:top;padding:0;height:1px;}
+.pt-cell{display:flex;flex-direction:column;gap:3px;width:100%;height:100%;min-height:92px;padding:9px 8px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);text-align:left;font:inherit;cursor:pointer;}
+.pt-cell:hover,.pt-cell:focus-visible{border-color:var(--navy);}
+.pt-cell.sel{border:2px solid var(--navy);padding:8px 7px;}
+.pt-brand{font-size:11.5px;font-weight:800;color:var(--text-muted);overflow-wrap:anywhere;}
+.pt-model{font-size:12.5px;font-weight:700;line-height:1.35;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.pt-yen{margin-top:auto;font-size:12.5px;font-weight:700;color:var(--accent-text,var(--accent));font-variant-numeric:tabular-nums;}
+.pt-empty{text-align:center;color:var(--text-muted);font-size:13px;padding-top:30px !important;}
+.pt-detail td{padding:8px 0 4px;}
+.pt-detail td > *{margin-left:0;}
+.pt-detail td{background:transparent;}
+.pt-detail td .pick-name{margin-top:0;}
+.pt-detail-head{font-size:12px;font-weight:800;color:var(--text-muted);margin-bottom:2px;}
+.pt-detail td{border-left:4px solid var(--accent);padding-left:12px;}
+.pt-hint{margin:8px 0 18px;font-size:12.5px;color:var(--text-muted);}
 .picks{list-style:none;margin:0 0 18px;padding:0;display:grid;gap:10px;}
 .pick{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:12px;padding:14px 16px;}
 .pick-kind{font-size:12px;font-weight:700;color:var(--text-muted);}
@@ -2405,7 +2424,7 @@ function dealsForResort(r){
 
 
 let GEAR_SPORT = null; try{ GEAR_SPORT = localStorage.getItem("yukinavi_gear_sport"); }catch(e){}
-const gearState = {selected: GEAR_CATEGORIES[0].id, level: null, angle: "price", sport: GEAR_SPORT};
+const gearState = {selected: GEAR_CATEGORIES[0].id, level: null, angle: "price", sport: GEAR_SPORT, open: null};
 function renderGearTab(){
   const ja = state.lang==="ja";
   const tabs = document.getElementById("gearTabs");
@@ -2426,23 +2445,75 @@ function renderGearTab(){
   if(plan.picksBy && !plan.picksBy[gearState.angle]) gearState.angle = "price";
   const sportSeg = `<div class="angle-seg sport-seg" role="group" aria-label="${ja?"スキーかスノーボード":"Ski or snowboard"}">${[["ski","スキー","Ski"],["board","スノーボード","Snowboard"]].map(([k,j,e])=>`<button type="button" class="${gearState.sport===k?"sel":""}" data-sport="${k}" aria-pressed="${gearState.sport===k}">${ja?j:e}</button>`).join("")}</div>`;
   tabs.innerHTML = sportSeg + `<button type="button" class="gear-tab-btn ${lv==="base"?"sel":""}" data-lv="base">${ja?"基本装備":"Basics"}</button>` + GEAR_LEVELS.map((k,i)=>`<button type="button" class="gear-tab-btn lv lv-${i} ${i===lv?"sel":""}" data-lv="${i}">${t(k)}</button>`).join("");
-  document.querySelectorAll("#gearTabs .gear-tab-btn").forEach(btn=>btn.addEventListener("click", ()=>{ gearState.level = btn.dataset.lv==="base" ? "base" : Number(btn.dataset.lv); renderGearTab(); }));
+  document.querySelectorAll("#gearTabs .gear-tab-btn").forEach(btn=>btn.addEventListener("click", ()=>{ gearState.level = btn.dataset.lv==="base" ? "base" : Number(btn.dataset.lv); gearState.open = null; renderGearTab(); }));
   document.querySelectorAll("#gearTabs .sport-seg button").forEach(b=>b.addEventListener("click", ()=>{ gearState.sport = b.dataset.sport; try{ localStorage.setItem("yukinavi_gear_sport", gearState.sport); }catch(e){} renderGearTab(); }));
-  setTimeout(()=>document.querySelectorAll("#gearContent .angle-seg button").forEach(b=>b.addEventListener("click", ()=>{ gearState.angle = b.dataset.angle; renderGearTab(); })), 0);
-  // おすすめ枠：商品ページへ直接飛ぶ。plan.picks（各レベル）＋上級は運営者が実際に使っている道具
-  const picks = [...(plan.picksBy ? plan.picksBy[gearState.angle] : (plan.picks||[])), ...(plan.curated ? GEAR_CATEGORIES.filter(g=>g.real).map(g=>({ja:g.productJa, en:g.productEn, kindJa:g.ja, kindEn:g.en, whyJa:g.whyJa, whyEn:g.whyEn, rakuten:g.url, amazon:g.amazon})) : [])];
-  const pickHtml = picks.map(g=>`
+  // おすすめ：商品の種類ごとに「値段・性能・見た目」の1位を表で並べる。マスをタップすると理由と購入ボタン
+  const cols = plan.picksBy ? angles.filter(([k])=>plan.picksBy[k]) : [];
+  const rowKey = k => k.replace(/^調光/,"");
+  const rows = [];
+  cols.forEach(([k])=>plan.picksBy[k].forEach(g=>{
+    const key = rowKey(g.kindJa);
+    let row = rows.find(r=>r.key===key);
+    if(!row){ row = {key, ja:key, en:g.kindEn.replace(/^Photochromic /i,""), cells:{}}; rows.push(row); }
+    row.cells[k] = g;
+  }));
+  // 1列にしか無い種類（開発者愛用だけの道具など）は表に入れず、下にまとめる
+  const soloRows = cols.length>1 ? rows.filter(r=>Object.keys(r.cells).length===1) : [];
+  soloRows.forEach(r=>rows.splice(rows.indexOf(r),1));
+  const splitName = n => { const m = n.match(/^(.+?)（[^）]*）\s*(.+)$/); return m ? [m[1], m[2]] : ["", n]; };
+  const buyBtns = g => `${g.az ? `<a class="cta-btn" href="${amazonSearch(g.az)}" target="_blank" rel="noopener sponsored">${ja?"Amazonで見る":"View on Amazon"}</a>` : ""}${g.rakuten ? `<a class="cta-btn ${g.az?"sec":""}" href="${g.rakuten.includes("rakuten.co.jp/") && !g.rakuten.includes("afl.rakuten") ? rakutenAff(g.rakuten) : g.rakuten}" target="_blank" rel="noopener sponsored">${ja?"楽天で見る":"View on Rakuten"}</a>` : ""}`;
+  const open = gearState.open;
+  const colHead = ([k,j,e]) => ja ? ({price:"値段", perf:"性能", brand:"見た目", mine:"開発者愛用"}[k]||j) : ({price:"Price", perf:"Performance", brand:"Looks", mine:"What I use"}[k]||e);
+  const tableHtml = rows.length ? `
+    <table class="pick-table">
+      <thead><tr>${cols.map(c=>`<th scope="col" class="pt-${c[0]}">${colHead(c)}</th>`).join("")}</tr></thead>
+      <tbody>${rows.map((r,ri)=>{
+        const cells = cols.map(([k],ci)=>{
+          const g = r.cells[k];
+          if(!g) return `<td class="pt-empty">—</td>`;
+          const [brand, model] = splitName(ja ? g.ja : g.en);
+          const id = `${ri}-${ci}`;
+          return `<td><button type="button" class="pt-cell ${open===id?"sel":""}" data-open="${id}" aria-expanded="${open===id}">
+            ${brand ? `<span class="pt-brand">${brand}</span>` : ""}<span class="pt-model">${model}</span>
+            ${g.yen ? `<span class="pt-yen">${ja?`約${g.yen.toLocaleString()}円`:`¥${g.yen.toLocaleString()}`}</span>` : ""}</button></td>`;
+        }).join("");
+        const oc = open && open.startsWith(ri+"-") ? Number(open.split("-")[1]) : -1;
+        const og = oc>=0 ? r.cells[cols[oc][0]] : null;
+        const detail = og ? `<tr class="pt-detail"><td colspan="${cols.length}">
+            <div class="pt-detail-head">${colHead(cols[oc])}${ja?"で選ぶなら":" pick"}</div>
+            <div class="pick-name">${ja?og.ja:og.en}</div>
+            ${(ja?og.whyJa:og.whyEn) ? `<p class="pick-why">${ja?og.whyJa:og.whyEn}</p>` : ""}
+            <div class="pick-btns">${buyBtns(og)}</div></td></tr>` : "";
+        return `<tr class="pt-kind"><th scope="rowgroup" colspan="${cols.length}">${ja?r.ja:r.en}</th></tr><tr>${cells}</tr>${detail}`;
+      }).join("")}</tbody>
+    </table>
+    <p class="pt-hint">${ja?"マスをタップすると、おすすめの理由と購入ボタンが出ます。":"Tap a cell to see why and where to buy."}</p>` : "";
+  const soloHtml = soloRows.length ? (()=>{
+    const k = Object.keys(soloRows[0].cells)[0];
+    const head = cols.find(c=>c[0]===k);
+    return `<div class="section-label">${ja?`${colHead(head)}のそのほかの道具`:`More of ${colHead(head).toLowerCase()}`}</div><ul class="picks">${soloRows.map(r=>{ const g = r.cells[Object.keys(r.cells)[0]]; return `
       <li class="pick">
         <div class="pick-kind">${ja?g.kindJa:g.kindEn}</div>
         <div class="pick-name">${ja?g.ja:g.en}${g.yen ? `<span class="pick-yen">${ja?`約${g.yen.toLocaleString()}円`:`about ¥${g.yen.toLocaleString()}`}</span>` : ""}</div>
         ${(ja?g.whyJa:g.whyEn) ? `<p class="pick-why">${ja?g.whyJa:g.whyEn}</p>` : ""}
-        <div class="pick-btns">${g.az ? `<a class="cta-btn" href="${amazonSearch(g.az)}" target="_blank" rel="noopener sponsored">${ja?"Amazonで見る":"View on Amazon"}</a>` : ""}${g.amazon ? `<a class="cta-btn" href="${g.amazon}" target="_blank" rel="noopener sponsored">${ja?"Amazonで見る":"View on Amazon"}</a>` : ""}${g.rakuten ? `<a class="cta-btn ${(g.amazon||g.az)?"sec":""}" href="${g.rakuten.includes("rakuten.co.jp/") && !g.rakuten.includes("afl.rakuten") ? rakutenAff(g.rakuten) : g.rakuten}" target="_blank" rel="noopener sponsored">${ja?"楽天で見る":"View on Rakuten"}</a>` : ""}</div>
-      </li>`).join("");
+        <div class="pick-btns">${buyBtns(g)}</div>
+      </li>`; }).join("")}</ul>`;
+  })() : "";
+  setTimeout(()=>document.querySelectorAll("#gearContent .pt-cell").forEach(b=>b.addEventListener("click", ()=>{
+    gearState.open = gearState.open===b.dataset.open ? null : b.dataset.open; renderGearTab();
+    const el = document.querySelector("#gearContent .pt-detail"); if(el) el.scrollIntoView({block:"nearest", behavior:"smooth"});
+  })), 0);
+  // 表に載せた種類は、下の「外部サイトで探す」から外す
+  const norm = x => x.replace(/[（(].*$/,"").replace(/^(スキー|スノーボード|スノボ)/,"").replace(/^調光/,"");
+  const inTable = it => [...rows, ...soloRows].some(r=>{ const a = norm(r.ja), b = norm(it.ja); return a && b && (a.includes(b) || b.includes(a)); });
+  const restItems = plan.items.filter(it=>!inTable(it));
   document.getElementById("gearContent").innerHTML = `
     <p class="gear-intro">${ja?plan.introJa:plan.introEn}</p>
-    ${pickHtml ? `<div class="section-label">${ja?(plan.pickLabelJa||"運営者のおすすめ"):(plan.pickLabelEn||"My picks")}</div>${plan.picksBy ? `<div class="angle-seg" role="group" aria-label="${ja?"選び方":"Pick by"}">${angles.map(([k,j,e])=>`<button type="button" class="${gearState.angle===k?"sel":""}" data-angle="${k}" aria-pressed="${gearState.angle===k}">${ja?j:e}</button>`).join("")}</div>` : ""}<ul class="picks">${pickHtml}</ul><div class="section-label">${ja?"そのほかはAmazon・楽天で探す":"Find the rest on Amazon or Rakuten"}</div>` : ""}
+    ${tableHtml ? `<div class="section-label">${ja?"選び方別のおすすめ":"Picks by what matters to you"}</div>${tableHtml}` : ""}
+    ${soloHtml}
+    ${restItems.length ? `<div class="section-label">${ja?"そのほかは外部サイトで探す":"Find the rest on Amazon or Rakuten"}</div>` : ""}
     <ol class="gear-list">
-      ${plan.items.map(it=>`
+      ${restItems.map(it=>`
       <li class="gear-item">
         <div class="gear-item-main"><div class="gear-item-name">${ja?it.ja:it.en}</div><div class="gear-item-why">${ja?it.whyJa:it.whyEn}</div></div>
         <div class="buy-seg" role="group" aria-label="${ja?`${it.ja}を探す`:`Shop for ${it.en.toLowerCase()}`}"><a href="${amazonSearch(it.q)}" target="_blank" rel="noopener sponsored">Amazon</a><a href="${rakutenSearch(it.q)}" target="_blank" rel="noopener sponsored">${ja?"楽天":"Rakuten"}</a></div>
