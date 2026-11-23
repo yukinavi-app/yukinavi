@@ -868,9 +868,89 @@ const ADVANCED_PICKS = {
 };
 const ADV_ANGLES = [["price","値段重視","Best price"],["perf","性能重視","Best performance"],["mine","開発者愛用","What I use"]];
 
+// スノーボードのおすすめ（CEO承認済み 2026-11-23：運営者はスキーヤーのため、一般的な評価をもとに選定）
+const BOARD_PICKS_0 = {
+  price:[
+    {kindJa:"お尻のプロテクター", kindEn:"Hip protector", ja:"ARK（エーアールケー）ヒッププロテクター ロング", en:"ARK hip protector (long)", yen:4000, rakuten:"https://item.rakuten.co.jp/clubits/10009938/", az:"ARK ヒッププロテクター",
+     whyJa:"最初は尻もちの連続なので、これがあるだけで痛さがかなり違います。まずはこれくらいの手軽なもので十分だと思います。", whyEn:"You'll fall on your bum a lot at first. A simple pad like this already makes a big difference."},
+    {kindJa:"グローブ", kindEn:"Gloves", ja:"SLQ（エスエルキュー）GORE-TEX 5本指グローブ", en:"SLQ GORE-TEX gloves", yen:5990, rakuten:"https://item.rakuten.co.jp/himaraya/0000001002925/", az:"SLQ ゴアテックス グローブ",
+     whyJa:"雪に手をつくことが多いので、防水はケチらないで欲しいです。この値段でGORE-TEXが入っているのはうれしいです。", whyEn:"Your hands are in the snow a lot. Real GORE-TEX at this price is a nice find."},
+    {kindJa:"ヘルメット", kindEn:"Helmet", ja:"GIRO（ジロ）LEDGE FS", en:"Giro Ledge FS", yen:9900, rakuten:"https://item.rakuten.co.jp/boomsports-ec/94410/", az:"GIRO LEDGE FS ヘルメット",
+     whyJa:"スノーボードは後ろに転んで頭を打ちやすいので、頭の保護はケチらないで欲しいです。信頼できるブランドでこの値段なら十分だと思います。", whyEn:"Backward falls are common on a board, so please protect your head. A trusted brand at a fair price."},
+  ],
+  perf:[
+    {kindJa:"お尻のプロテクター", kindEn:"Hip protector", ja:"DAINESE（ダイネーゼ）FLEX SHORTS", en:"Dainese Flex Shorts", yen:22000, rakuten:"https://item.rakuten.co.jp/dainese/4879995/", az:"DAINESE FLEX SHORTS",
+     whyJa:"お尻と腰まわりをしっかり守ってくれます。動きを邪魔しにくい作りなので、転ぶのが怖くなくなると思います。", whyEn:"Solid hip and lower-back protection that doesn't get in your way."},
+    {kindJa:"グローブ", kindEn:"Gloves", ja:"BURTON（バートン）GORE-TEX Under Gloves", en:"Burton GORE-TEX Under Gloves", yen:11880, rakuten:"https://item.rakuten.co.jp/e-kanagu/27000150/", az:"BURTON GORE-TEX Under Gloves",
+     whyJa:"袖の中に入れるタイプなので、手首から雪が入りにくいです。", whyEn:"Tucks under your sleeve, so snow stays out of your wrists."},
+    {kindJa:"ヘルメット", kindEn:"Helmet", ja:"OAKLEY（オークリー）MOD3 MIPS アジアンフィット", en:"Oakley MOD3 MIPS (Asian fit)", yen:20790, rakuten:"https://item.rakuten.co.jp/outdoor-zousan/oakley-mod3/", az:"OAKLEY MOD3 MIPS",
+     whyJa:"転んだときに頭にかかるねじれを減らすMIPS入りです。ダイヤルでサイズを合わせられて、日本人の頭の形にも合いやすいです。", whyEn:"MIPS inside, a dial fit, and shaped for Asian heads."},
+  ],
+  brand:[
+    {kindJa:"お尻のプロテクター", kindEn:"Hip protector", ja:"BURTON（バートン）Impact Shorts", en:"Burton Impact Shorts", yen:17820, rakuten:"https://item.rakuten.co.jp/e-kanagu/38004056/", az:"BURTON Impact Shorts",
+     whyJa:"スノーボードといえばバートンです。ウェアの下に着けても目立ちにくいです。", whyEn:"Burton is the snowboard brand, and these hide well under your pants."},
+    {kindJa:"グローブ", kindEn:"Gloves", ja:"686（シックスエイトシックス）GORE-TEX LINEAR GLOVE", en:"686 GORE-TEX Linear Glove", yen:11190, rakuten:"https://item.rakuten.co.jp/nameless/2640040040005/", az:"686 GORE-TEX LINEAR GLOVE",
+     whyJa:"スノーボードらしいラフな見た目で、GORE-TEXなので性能も安心です。", whyEn:"A relaxed snowboard look, with GORE-TEX inside."},
+    {kindJa:"ヘルメット", kindEn:"Helmet", ja:"sandbox（サンドボックス）CLASSIC 2.0 SNOW MIPS", en:"Sandbox Classic 2.0 Snow MIPS", yen:29700, rakuten:"https://item.rakuten.co.jp/elephant-sports/classic20snow-mip/", az:"sandbox CLASSIC 2.0 SNOW",
+     whyJa:"キャップのような形で、ヘルメットっぽく見えないのがかっこいいです。MIPS入りで安全面も安心です。", whyEn:"Looks like a cap rather than a helmet, with MIPS inside."},
+  ],
+};
+const BOARD_PICKS_1 = {
+  price:[
+    {kindJa:"ブーツ", kindEn:"Boots", ja:"DEELUXE（ディーラックス）DNA", en:"Deeluxe DNA", yen:31999, rakuten:"https://item.rakuten.co.jp/glv/dee-9/", az:"DEELUXE DNA ブーツ",
+     whyJa:"日本人の足に合わせて作られているブランドです。最初の自分のブーツにちょうどいいと思います。ただ、ブーツだけはお店で履いてから買って欲しいです...", whyEn:"Made with Japanese feet in mind. Please try boots on in a shop before you buy, though."},
+    {kindJa:"ビンディング", kindEn:"Bindings", ja:"UNION（ユニオン）STR", en:"Union STR", yen:26950, rakuten:"https://item.rakuten.co.jp/f-janck/126uni2014/", az:"UNION STR ビンディング",
+     whyJa:"丈夫で壊れにくいと評判のブランドです。クセのない作りで、どんな滑りにも合わせやすいです。", whyEn:"Known for being tough, and easy to get along with for any style."},
+    {kindJa:"簡易ワックス", kindEn:"Quick wax", ja:"GALLIUM（ガリウム）GENERAL・G 220", en:"Gallium GENERAL・G 220", yen:2290, rakuten:"https://item.rakuten.co.jp/toolfactory/ga00200583/", az:"GALLIUM GENERAL・G 220",
+     whyJa:"塗って拭くだけの簡単なワックスです。これだけでも板の走りが変わるので、まずは試してみて欲しいです。", whyEn:"Just wipe on and buff. Even this changes how your board glides."},
+  ],
+  perf:[
+    {kindJa:"ブーツ", kindEn:"Boots", ja:"ThirtyTwo（サーティーツー）LASHED DOUBLE BOA", en:"ThirtyTwo Lashed Double BOA", yen:42185, rakuten:"https://item.rakuten.co.jp/boomsports-ec/t26btmlsdbn/", az:"ThirtyTwo LASHED DOUBLE BOA",
+     whyJa:"ダイヤルが2つあって、足首とつま先側を別々に締められます。熱で足の形に合わせられるのもよいです。", whyEn:"Two dials tighten the ankle and toes separately, and the liner heat-molds to your feet."},
+    {kindJa:"ビンディング", kindEn:"Bindings", ja:"UNION（ユニオン）STRATA", en:"Union Strata", yen:30030, rakuten:"https://item.rakuten.co.jp/liberty-snow/126uni2018/", az:"UNION STRATA",
+     whyJa:"STRより少し反応がよく、ターンがしっかりしてきた人に合います。", whyEn:"A bit more responsive than the STR, for riders whose turns are getting solid."},
+    {kindJa:"簡易ワックス", kindEn:"Quick wax", ja:"GALLIUM（ガリウム）HYBRID HF LIQUID BLUE", en:"Gallium Hybrid HF Liquid Blue", yen:4752, rakuten:"https://item.rakuten.co.jp/auc-follows/sn-itm-gal-149/", az:"GALLIUM HYBRID HF LIQUID",
+     whyJa:"簡易ワックスでも、ちょっといいものを選ぶと滑りの軽さが違います。", whyEn:"Even with quick wax, a better one makes your board feel lighter."},
+  ],
+  brand:[
+    {kindJa:"ブーツ", kindEn:"Boots", ja:"BURTON（バートン）Ruler BOA", en:"Burton Ruler BOA", yen:49115, rakuten:"https://item.rakuten.co.jp/peachboys-tokyo/27bur00329/", az:"BURTON Ruler BOA",
+     whyJa:"バートンの定番ブーツです。見た目もすっきりしていて、どんなウェアにも合います。", whyEn:"Burton's go-to boot, with a clean look that goes with anything."},
+    {kindJa:"ビンディング", kindEn:"Bindings", ja:"BURTON（バートン）Cartel Re:Flex", en:"Burton Cartel Re:Flex", yen:46200, rakuten:"https://item.rakuten.co.jp/follows1/sn-bd-burton-084/", az:"BURTON Cartel Re:Flex",
+     whyJa:"バートンの中でも長く愛されているモデルです。ブーツと同じブランドでそろえると、見た目もまとまります。", whyEn:"A long-time Burton favorite. Matching it with Burton boots looks sharp."},
+    {kindJa:"簡易ワックス", kindEn:"Quick wax", ja:"VOLA（ボラ）MX NO FLUOR リキッド", en:"Vola MX No Fluor liquid", yen:4840, rakuten:"https://item.rakuten.co.jp/himaraya/0000001161711/", az:"VOLA MX NO FLUOR",
+     whyJa:"フランスのブランドで、レースの世界でも使われています。持っているだけで気分が上がります。", whyEn:"A French brand used in racing. Just having it gets you excited."},
+  ],
+};
+const BOARD_PICKS_2 = {
+  price:[
+    {kindJa:"板", kindEn:"Board", ja:"SALOMON（サロモン）ASSASSIN（25-26）", en:"Salomon Assassin (25-26)", yen:75580, rakuten:"https://item.rakuten.co.jp/ekosuta/snbsalomon25121/", az:"SALOMON ASSASSIN スノーボード",
+     whyJa:"圧雪もパウダーも、一本でなんでもこなせる板です。型落ちなので手が届きやすいです。サイズはお店のページで確認してください。", whyEn:"One board for groomers and powder, and last season's model keeps the price down. Check the size on the shop page."},
+    {kindJa:"ブーツ", kindEn:"Boots", ja:"DEELUXE（ディーラックス）TEAM ID s3", en:"Deeluxe Team ID s3", yen:42900, rakuten:"https://item.rakuten.co.jp/auc-breakout/thermo-ld/", az:"DEELUXE TEAM ID",
+     whyJa:"硬めで、熱で足の形に合わせられるブーツです。この値段でここまでそろっているのはありがたいです。", whyEn:"Stiff and heat-moldable, which is a lot for the price."},
+    {kindJa:"ホットワックス用品", kindEn:"Hot wax kit", ja:"GALLIUM（ガリウム）ワクシングKit", en:"Gallium Waxing Kit", yen:8989, rakuten:"https://item.rakuten.co.jp/himaraya/0000001122901/", az:"GALLIUM ワクシングKit",
+     whyJa:"アイロンからワックスまで、必要なものが一通りそろっています。自分で手入れを始めるならこれで十分だと思います。", whyEn:"Iron, wax and tools in one box. Enough to start tuning your own board."},
+  ],
+  perf:[
+    {kindJa:"板", kindEn:"Board", ja:"OGASAKA（オガサカ）CT", en:"Ogasaka CT", yen:116600, rakuten:"https://item.rakuten.co.jp/bells-web/10000042-7/", az:"OGASAKA CT スノーボード",
+     whyJa:"日本の工場で作られている、カービングの定番の板です。エッジが雪をしっかり捉えてくれます。", whyEn:"A Japanese-made carving classic. The edge grips the snow with confidence."},
+    {kindJa:"ブーツ", kindEn:"Boots", ja:"BURTON（バートン）ION BOA", en:"Burton Ion BOA", yen:91300, rakuten:"https://item.rakuten.co.jp/peachboys-tokyo/27bur00325/", az:"BURTON ION BOA",
+     whyJa:"バートンの中でも硬めの上位モデルです。高速でも力が逃げにくいです。", whyEn:"One of Burton's stiffest boots. Your power doesn't leak at speed."},
+    {kindJa:"ホットワックス用品", kindEn:"Hot wax kit", ja:"GALLIUM（ガリウム）Trial Waxing Set + ワックススタンド", en:"Gallium Trial Waxing Set + stand", yen:16980, rakuten:"https://item.rakuten.co.jp/toolfactory/ga00200609/", az:"GALLIUM Trial Waxing Set",
+     whyJa:"板を固定するスタンドが付いているので、家でも作業がしやすいです。", whyEn:"Comes with a stand to hold the board, so waxing at home is easy."},
+  ],
+  brand:[
+    {kindJa:"板", kindEn:"Board", ja:"SALOMON（サロモン）ASSASSIN PRO", en:"Salomon Assassin Pro", yen:91630, rakuten:"https://item.rakuten.co.jp/sports-ex/27sal00104/", az:"SALOMON ASSASSIN PRO",
+     whyJa:"サロモンの人気シリーズの上位モデルです。デザインもかっこよくて、持っているだけでうれしくなります。", whyEn:"The top model in Salomon's popular series, and it looks great."},
+    {kindJa:"ブーツ", kindEn:"Boots", ja:"ThirtyTwo（サーティーツー）TM-2", en:"ThirtyTwo TM-2", yen:61952, rakuten:"https://item.rakuten.co.jp/wmsnowboards/27-8006/", az:"ThirtyTwo TM-2",
+     whyJa:"スノーボーダーに長く愛されている定番のブーツです。ひも靴らしい見た目が好きな人におすすめです。", whyEn:"A boot riders have loved for years, with a classic lace-up look."},
+    {kindJa:"ホットワックス用品", kindEn:"Hot wax", ja:"ONEBALL（ワンボール）4WD", en:"OneBall 4WD", yen:2860, rakuten:"https://item.rakuten.co.jp/busselstore/oneball-4wd-165g/", az:"ONEBALL 4WD ワックス",
+     whyJa:"スノーボードのために作られたワックスブランドです。雪の温度を選ばず使えます。", whyEn:"A wax brand made for snowboarding, good across snow temperatures."},
+  ],
+};
 // スノーボード：レベル別の装備（おすすめ商品はCEO承認後に picksBy を追加）
 const BOARD_PLAN = [
   { // 初心者
+    picksBy:BOARD_PICKS_0, pickLabelJa:"おすすめ", pickLabelEn:"Picks",
     introJa:"最初はレンタルで十分です。スノーボードは転ぶ回数が多いので、まずは体を守るものから。",
     introEn:"Rent everything at first. Snowboarding means lots of falls, so start with things that protect you.",
     items:[
@@ -884,6 +964,7 @@ const BOARD_PLAN = [
       {ja:"板・ビンディングのセット", en:"Board & bindings set", whyJa:"最後でOK。柔らかめの板がターンを覚えやすいです。", whyEn:"Last on the list. A softer board makes turns easier to learn.", q:"スノーボード 板 ビンディング セット 初心者"},
     ]},
   { // 中級
+    picksBy:BOARD_PICKS_1, pickLabelJa:"おすすめ", pickLabelEn:"Picks",
     introJa:"ターンがつながってきたら、自分に合った道具で上達が変わる段階です。",
     introEn:"Once your turns link up, gear that suits you starts to make a difference.",
     items:[
@@ -894,6 +975,7 @@ const BOARD_PLAN = [
       {ja:"簡易ワックス", en:"Quick wax", whyJa:"塗るだけで板の走りが変わります。", whyEn:"Even quick wax makes your board glide noticeably better.", q:"スノーボード ワックス 簡易"},
     ]},
   { // 上級
+    picksBy:BOARD_PICKS_2, pickLabelJa:"おすすめ", pickLabelEn:"Picks",
     introJa:"ここから先は、パーク・パウダー・カービングなど滑りたいスタイル次第です。",
     introEn:"From here it depends on your style: park, powder or carving.",
     items:[
@@ -2281,7 +2363,7 @@ function renderGearTab(){
       </li>`).join("");
   document.getElementById("gearContent").innerHTML = `
     <p class="gear-intro">${ja?plan.introJa:plan.introEn}</p>
-    ${pickHtml ? `<div class="section-label">${ja?"運営者のおすすめ":"My picks"}</div>${plan.picksBy ? `<div class="angle-seg" role="group" aria-label="${ja?"選び方":"Pick by"}">${angles.map(([k,j,e])=>`<button type="button" class="${gearState.angle===k?"sel":""}" data-angle="${k}" aria-pressed="${gearState.angle===k}">${ja?j:e}</button>`).join("")}</div>` : ""}<ul class="picks">${pickHtml}</ul><div class="section-label">${ja?"そのほかはAmazon・楽天で探す":"Find the rest on Amazon or Rakuten"}</div>` : ""}
+    ${pickHtml ? `<div class="section-label">${ja?(plan.pickLabelJa||"運営者のおすすめ"):(plan.pickLabelEn||"My picks")}</div>${plan.picksBy ? `<div class="angle-seg" role="group" aria-label="${ja?"選び方":"Pick by"}">${angles.map(([k,j,e])=>`<button type="button" class="${gearState.angle===k?"sel":""}" data-angle="${k}" aria-pressed="${gearState.angle===k}">${ja?j:e}</button>`).join("")}</div>` : ""}<ul class="picks">${pickHtml}</ul><div class="section-label">${ja?"そのほかはAmazon・楽天で探す":"Find the rest on Amazon or Rakuten"}</div>` : ""}
     <ol class="gear-list">
       ${plan.items.map(it=>`
       <li class="gear-item">

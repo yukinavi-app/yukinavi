@@ -1,4 +1,4 @@
-const CACHE_NAME = "yukinavi-v29";
+const CACHE_NAME = "yukinavi-v30";
 const CORE_ASSETS = ["./", "./index.html", "./manifest.json", "./icons/icon-192.png", "./icons/icon-512.png", "./data/resorts_all.json", "./data/resorts.json", "./vendor/leaflet/leaflet.min.js", "./vendor/leaflet/leaflet.min.css", "./photos/sea-of-clouds.webp"];
 
 self.addEventListener("install", (event) => {
