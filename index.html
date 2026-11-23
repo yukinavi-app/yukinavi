@@ -955,6 +955,71 @@ const BOARD_PICKS_2 = {
      whyJa:"スノーボードのために作られたワックスブランドです。雪の温度を選ばず使えます。", whyEn:"A wax brand made for snowboarding, good across snow temperatures."},
   ],
 };
+// 基本装備（スキー・スノボ共通）。CEO承認済み（2026-11-23）
+const BASE_PICKS = {
+  price:[
+    {kindJa:"上のインナー", kindEn:"Base layer top", ja:"おたふく手袋 ボディタフネス ハイネック（JW-170）", en:"Otafuku Body Toughness high-neck (JW-170)", yen:1280, rakuten:"https://item.rakuten.co.jp/netonya/10004673/", az:"おたふく手袋 JW-170",
+     whyJa:"綿のシャツは汗で濡れると一日中冷たいままです。千円ちょっとで裏起毛なので、まずはこれに替えるだけでもかなり違うと思います。", whyEn:"Cotton stays cold once it's sweaty. This fleece-lined top costs about ¥1,300 and already makes a big difference."},
+    {kindJa:"タイツ", kindEn:"Tights", ja:"おたふく手袋 サーモエボ ヘビーウェイト ロングタイツ（前開き）", en:"Otafuku Thermo Evo heavyweight tights", yen:2700, rakuten:"https://item.rakuten.co.jp/yamashita-yamasen/jw-251/", az:"おたふく手袋 サーモエボ ロングタイツ",
+     whyJa:"サッカーなどで使う薄いタイツより、裏がボアになっていてずっと温かいです。この値段でここまで温かいのはうれしいです。", whyEn:"Much warmer than the thin tights used for football, thanks to the fleece lining. Great warmth for the price."},
+    {kindJa:"インナー手袋", kindEn:"Liner gloves", ja:"REUSCH（ロイシュ）DRYZONE TOUCH-TEC", en:"Reusch Dryzone Touch-Tec", yen:1670, rakuten:"https://item.rakuten.co.jp/tanabesp/cd35481/", az:"REUSCH インナーグローブ",
+     whyJa:"グローブの中に一枚はくだけで、指先の冷えがかなり違います。スマホも外さずに操作できます。", whyEn:"One thin layer inside your gloves keeps your fingers warmer, and you can use your phone without taking them off."},
+    {kindJa:"ネックウォーマー", kindEn:"Neck warmer", ja:"裏ボア ニット ネックウォーマー", en:"Fleece-lined knit neck warmer", yen:1099, rakuten:"https://item.rakuten.co.jp/romanjyu/cysy005/", az:"ネックウォーマー スキー",
+     whyJa:"首が温かいだけで体感がまったく違います。千円ほどなので、ひとつ持っていくと安心です。", whyEn:"A warm neck changes how cold you feel. For about ¥1,000 it's worth packing one."},
+    {kindJa:"バフ（ネックチューブ）", kindEn:"Neck tube", ja:"BUFF（バフ）ORIGINAL ECOSTRETCH", en:"Buff Original EcoStretch", yen:3520, rakuten:"https://item.rakuten.co.jp/lifestyle-select-trues/619914/", az:"BUFF ORIGINAL ECOSTRETCH",
+     whyJa:"薄い筒状の布で、首にも顔にも頭にも使えます。ネックウォーマーだと暑い春スキーや、日焼け対策にも便利です。", whyEn:"A thin tube you can wear on your neck, face or head. Handy for warm spring days and sun protection."},
+    {kindJa:"ソックス", kindEn:"Socks", ja:"FOOTMAX（フットマックス）3D SOX WINTER EXTREME", en:"Footmax 3D Sox Winter Extreme", yen:2420, rakuten:"https://item.rakuten.co.jp/tanabesp/cd106156/", az:"FOOTMAX スキーソックス",
+     whyJa:"普通の靴下だとブーツの中でずれて痛くなりやすいです。スキー用の長い靴下を一足は持っておいて欲しいです。", whyEn:"Regular socks slip and rub inside ski boots. Please own at least one pair of proper ski socks."},
+    {kindJa:"帽子", kindEn:"Beanie", ja:"ネコ耳ニット帽", en:"Cat-ear knit beanie", yen:1980, rakuten:"https://item.rakuten.co.jp/boushiya-rough/knit24-08/", az:"ネコ耳 ニット帽",
+     whyJa:"移動や休憩のときにかぶる用です。ネコ耳がかわいくて、雪山の写真にも映えます。滑るときはヘルメットをかぶってくださいね。", whyEn:"For travel and breaks. The cat ears look great in snow photos. Please wear a helmet when you ski."},
+  ],
+  perf:[
+    {kindJa:"上のインナー", kindEn:"Base layer top", ja:"icebreaker（アイスブレーカー）260 Tech 長袖クルー", en:"Icebreaker 260 Tech LS Crew", yen:14630, rakuten:"https://item.rakuten.co.jp/rakuzanso/ix26220-sp/", az:"icebreaker 260 Tech",
+     whyJa:"厚手のメリノウールで、汗をかいても冷えにくく、何日か着てもにおいにくいです。泊まりで行く人ほどありがたさがわかると思います。", whyEn:"Thick merino that stays warm when sweaty and doesn't smell after days of wear."},
+    {kindJa:"タイツ", kindEn:"Tights", ja:"MIZUNO（ミズノ）ブレスサーモ EXプラス タイツ（前開き）", en:"Mizuno Breath Thermo EX Plus tights", yen:6000, rakuten:"https://item.rakuten.co.jp/hakubasports/c2jb061309/", az:"ミズノ ブレスサーモ EXプラス タイツ",
+     whyJa:"体の水分で温かくなるブレスサーモの中でも、いちばん温かいシリーズです。サッカー用のタイツでは寒いと感じる人に、ぜひ試して欲しいです。", whyEn:"The warmest of Mizuno's Breath Thermo line. If your football tights feel cold, try these."},
+    {kindJa:"インナー手袋", kindEn:"Liner gloves", ja:"HESTRA（ヘストラ）Patrol Liner", en:"Hestra Patrol Liner", yen:4950, rakuten:"https://item.rakuten.co.jp/tanabesp/cd106934/", az:"HESTRA Patrol Liner",
+     whyJa:"グローブで有名なブランドのインナーです。温かくて、指先までぴったり合います。", whyEn:"Liners from a famous glove maker. Warm, with a snug fit to the fingertips."},
+    {kindJa:"ネックウォーマー", kindEn:"Neck warmer", ja:"BUFF（バフ）POLAR", en:"Buff Polar", yen:4148, rakuten:"https://item.rakuten.co.jp/himaraya/0000001302749/", az:"BUFF POLAR ネックウォーマー",
+     whyJa:"フリースと薄い生地の2層で、鼻まで上げても息苦しくなりにくいです。", whyEn:"Fleece plus a thin layer, so you can pull it over your nose and still breathe easily."},
+    {kindJa:"バフ（ネックチューブ）", kindEn:"Neck tube", ja:"BUFF（バフ）MERINO LIGHTWEIGHT", en:"Buff Merino Lightweight", yen:4830, rakuten:"https://item.rakuten.co.jp/himaraya/0000001302752/", az:"BUFF MERINO LIGHTWEIGHT",
+     whyJa:"メリノウールなので、薄くても温かく、口元が濡れても冷たくなりにくいです。", whyEn:"Merino keeps it warm even though it's thin, and it stays comfortable when damp."},
+    {kindJa:"ソックス", kindEn:"Socks", ja:"Smartwool（スマートウール）スキー フルクッション", en:"Smartwool Ski Full Cushion", yen:4730, rakuten:"https://item.rakuten.co.jp/westwebstore/k-863653/", az:"Smartwool スキー フルクッション",
+     whyJa:"メリノウールで温かく、クッションが厚いのでブーツのあたりがやわらかくなります。", whyEn:"Warm merino with thick cushioning that softens boot pressure."},
+    {kindJa:"帽子", kindEn:"Beanie", ja:"THE NORTH FACE（ノースフェイス）エンデュランスビーニー", en:"The North Face Endurance Beanie", yen:4450, rakuten:"https://item.rakuten.co.jp/sportsx/nn42172/", az:"THE NORTH FACE エンデュランスビーニー",
+     whyJa:"耳までしっかり覆えて、風を通しにくい作りです。リフト待ちの寒い時間に助かります。滑るときはヘルメットをかぶってくださいね。", whyEn:"Covers your ears and blocks wind, which helps in cold lift lines. Please wear a helmet when you ski."},
+  ],
+  brand:[
+    {kindJa:"上のインナー", kindEn:"Base layer top", ja:"MIZUNO（ミズノ）ブレスサーモ プラス 長袖", en:"Mizuno Breath Thermo Plus long sleeve", yen:4235, rakuten:"https://item.rakuten.co.jp/mondoko/c2ja9641/", az:"ミズノ ブレスサーモ 長袖",
+     whyJa:"日本のスキーヤーにはおなじみのインナーです。迷ったらこれを選んでおけば安心です。", whyEn:"A Japanese skier favorite. A safe choice if you're unsure."},
+    {kindJa:"タイツ", kindEn:"Tights", ja:"icebreaker（アイスブレーカー）200 Oasis Legging", en:"Icebreaker 200 Oasis Legging", yen:16137, rakuten:"https://item.rakuten.co.jp/rakuzanso/ix20226-2/", az:"icebreaker 200 Oasis Legging",
+     whyJa:"ニュージーランドのメリノウールのブランドです。肌ざわりがやわらかく、一日はいていても快適です。", whyEn:"A New Zealand merino brand. Soft on the skin and comfortable all day."},
+    {kindJa:"インナー手袋", kindEn:"Liner gloves", ja:"THE NORTH FACE（ノースフェイス）イーチップ グローブ", en:"The North Face Etip Glove", yen:5874, rakuten:"https://item.rakuten.co.jp/ripe/tnf-nn86116/", az:"ノースフェイス イーチップグローブ",
+     whyJa:"街でも使えるので、移動中はこれだけ、滑るときはグローブの中に、と使い分けられます。", whyEn:"Wear them alone in town, and inside your ski gloves on the slopes."},
+    {kindJa:"ネックウォーマー", kindEn:"Neck warmer", ja:"Columbia（コロンビア）バックアイスプリングス ネックゲイター", en:"Columbia Buckeye Springs Neck Gaiter", yen:2530, rakuten:"https://item.rakuten.co.jp/cloth-harbor/pu2076/", az:"Columbia ネックゲイター",
+     whyJa:"柄がかわいくて、街でもそのまま使えます。フリースなので温かさも十分です。", whyEn:"Fun patterns you can wear in town too, and the fleece keeps you warm."},
+    {kindJa:"バフ（ネックチューブ）", kindEn:"Neck tube", ja:"BUFF（バフ）MERINO LIGHTWEIGHT PRINTS", en:"Buff Merino Lightweight Prints", yen:5280, rakuten:"https://item.rakuten.co.jp/aspen-skishop/426buf9041/", az:"BUFF MERINO LIGHTWEIGHT PRINTS",
+     whyJa:"ネックチューブといえばバフです。柄が多いので、ウェアに合わせて選ぶのも楽しいです。", whyEn:"Buff is the name in neck tubes, and there are lots of prints to match your outfit."},
+    {kindJa:"ソックス", kindEn:"Socks", ja:"MICO（ミコ）X-RACE EXTRA-Light", en:"Mico X-Race Extra-Light", yen:3560, rakuten:"https://item.rakuten.co.jp/himaraya/0000000883191/", az:"MICO X-RACE スキーソックス",
+     whyJa:"イタリアのブランドで、レーサーにも人気の薄手のソックスです。ブーツの中で足が動きにくくなります。", whyEn:"An Italian brand popular with racers. The thin fit keeps your foot from moving in the boot."},
+    {kindJa:"帽子", kindEn:"Beanie", ja:"CA4LA（カシラ）RIB BEANIE", en:"CA4LA Rib Beanie", yen:8360, rakuten:"https://item.rakuten.co.jp/stylife/ra4479/", az:"CA4LA RIB BEANIE",
+     whyJa:"日本の帽子ブランドで、色がきれいでかわいいです。温泉街を歩くときにもおしゃれです。滑るときはヘルメットをかぶってくださいね。", whyEn:"A Japanese hat brand with lovely colors, nice for strolling an onsen town. Please wear a helmet when you ski."},
+  ],
+};
+const BASE_PLAN = {
+  picksBy:BASE_PICKS,
+  introJa:"スキーでもスノーボードでも、まずはこれ。どれもレンタルがないので、自分で用意するものです。",
+  introEn:"Whether you ski or ride, start here. None of these can be rented, so you'll need your own.",
+  items:[
+    {ja:"上のインナー", en:"Base layer top", whyJa:"綿は汗で冷えます。化繊かウールを。", whyEn:"Cotton stays wet and chills you. Choose synthetic or wool.", q:"スキー インナー 長袖 速乾"},
+    {ja:"タイツ", en:"Tights", whyJa:"裏起毛やウールのものが温かいです。", whyEn:"Fleece-lined or wool tights are the warmest.", q:"スキー タイツ 裏起毛"},
+    {ja:"インナー手袋", en:"Liner gloves", whyJa:"グローブの中に重ねると、指先の冷えが変わります。", whyEn:"Layered inside your gloves, they keep your fingers warmer.", q:"インナーグローブ スキー"},
+    {ja:"ネックウォーマー", en:"Neck warmer", whyJa:"首を温めるだけで体感がかなり変わります。", whyEn:"Keeping your neck warm makes a big difference.", q:"スキー ネックウォーマー"},
+    {ja:"バフ（ネックチューブ）", en:"Neck tube", whyJa:"薄い筒状の布。暖かい日や日焼け対策に。", whyEn:"A thin tube for warm days and sun protection.", q:"ネックチューブ スキー"},
+    {ja:"スキー・スノボ用ソックス", en:"Ski / snowboard socks", whyJa:"ひざ下まである厚手のものを。普通の靴下はブーツの中でずれて痛くなります。", whyEn:"Knee-high and cushioned. Regular socks slip and rub in ski boots.", q:"スキーソックス"},
+    {ja:"帽子（移動・休憩用）", en:"Beanie (for travel and breaks)", whyJa:"滑るときはヘルメットがおすすめです。帽子は移動や休憩のときに。", whyEn:"Wear a helmet on the slopes. A beanie is for travel and breaks.", q:"ニット帽 ビーニー"},
+    {ja:"日焼け止め・リップ", en:"Sunscreen & lip balm", whyJa:"雪の照り返しで、晴れた日は顔がよく焼けます。", whyEn:"Snow glare burns your face on sunny days.", q:"日焼け止め スキー"},
+  ]};
 // スノーボード：レベル別の装備（おすすめ商品はCEO承認後に picksBy を追加）
 const BOARD_PLAN = [
   { // 初心者
@@ -966,7 +1031,6 @@ const BOARD_PLAN = [
       {ja:"スノーボード用グローブ", en:"Snowboard gloves", whyJa:"雪に手をつくことが多いので、防水で手首まで覆うものを。", whyEn:"Your hands touch the snow often. Get waterproof gloves that cover your wrists.", q:"スノーボード グローブ 防水"},
       {ja:"ゴーグル", en:"Goggles", whyJa:"雪の照り返しは想像以上に眩しい。メガネの人は「メガネ対応」を。", whyEn:"Snow glare is stronger than you expect. If you wear glasses, get an over-glasses (OTG) model.", q:"スノーボード ゴーグル メガネ対応"},
       {ja:"ヘルメット", en:"Helmet", whyJa:"後ろに転んで頭を打ちやすいのがスノーボードです。最初こそかぶって欲しいです。", whyEn:"Falling backwards and hitting your head is common on a board. Wear one from day one.", q:"スノーボード ヘルメット"},
-      {ja:"速乾インナー・ネックウォーマー", en:"Base layer & neck warmer", whyJa:"綿は汗で冷えます。化繊かウールを。", whyEn:"Cotton stays wet and chills you. Choose synthetic or wool.", q:"スノーボード インナー 速乾"},
       {ja:"ブーツ", en:"Boots", whyJa:"続けるなら最初に買う大物。足に合わないと痛くて楽しめないので、お店で履いて選ぶのがおすすめです。", whyEn:"The first big item to buy if you continue. Try them on in a shop if you can.", q:"スノーボード ブーツ BOA"},
       {ja:"ウェア上下", en:"Jacket & pants", whyJa:"座ることが多いので、パンツは防水がしっかりしたものを。", whyEn:"You'll sit in the snow a lot, so get well-waterproofed pants.", q:"スノーボードウェア 上下"},
       {ja:"板・ビンディングのセット", en:"Board & bindings set", whyJa:"最後でOK。柔らかめの板がターンを覚えやすいです。", whyEn:"Last on the list. A softer board makes turns easier to learn.", q:"スノーボード 板 ビンディング セット 初心者"},
@@ -1004,7 +1068,6 @@ const GEAR_PLAN = [
     items:[
       {ja:"スキーグローブ", en:"Ski gloves", whyJa:"軍手や普段の手袋は濡れてすぐ冷たくなります。レンタルがないことも多い小物です。", whyEn:"Cotton or everyday gloves get wet and cold fast, and gloves are often not for rent.", q:"スキーグローブ"},
       {ja:"ゴーグル", en:"Goggles", whyJa:"雪の照り返しは想像以上に眩しい。メガネの人は「メガネ対応」を。", whyEn:"Snow glare is stronger than you expect. If you wear glasses, get an over-glasses (OTG) model.", q:"スキーゴーグル メガネ対応"},
-      {ja:"速乾インナー・ネックウォーマー", en:"Base layer & neck warmer", whyJa:"綿は汗で冷えます。化繊かウールを。", whyEn:"Cotton stays wet and chills you. Choose synthetic or wool.", q:"スキー インナー 速乾"},
       {ja:"ヘルメット", en:"Helmet", whyJa:"転ぶ回数が多い最初こそ。レンタルできる所もあります。", whyEn:"You fall most in your first days. Some resorts rent them.", q:"スキー ヘルメット"},
       {ja:"ブーツ", en:"Boots", whyJa:"続けるなら最初に買う大物。合わないブーツは痛くて、それだけでスキーが嫌になります。お店で足に合わせて選ぶのがおすすめ。", whyEn:"The first big item to buy if you continue. Boots that don't fit hurt enough to ruin skiing. Get them fitted in a shop if you can.", q:"スキーブーツ 初心者"},
       {ja:"ウェア上下", en:"Jacket & pants", whyJa:"レンタルでも困りませんが、毎回借りるなら買った方が安くなります。", whyEn:"Renting is fine, but if you go often, owning works out cheaper.", q:"スキーウェア 上下 セット"},
@@ -2357,13 +2420,13 @@ function renderGearTab(){
       renderGearTab(); }));
     return;
   }
-  const lv = gearState.level ?? (wiz.level==null ? 0 : terrIdx());
-  const plan = (gearState.sport==="board" ? BOARD_PLAN : GEAR_PLAN)[lv];
+  const lv = gearState.level ?? (wiz.level==null ? "base" : terrIdx());
+  const plan = lv==="base" ? BASE_PLAN : (gearState.sport==="board" ? BOARD_PLAN : GEAR_PLAN)[lv];
   const angles = plan.angles || PICK_ANGLES;
   if(plan.picksBy && !plan.picksBy[gearState.angle]) gearState.angle = "price";
   const sportSeg = `<div class="angle-seg sport-seg" role="group" aria-label="${ja?"スキーかスノーボード":"Ski or snowboard"}">${[["ski","スキー","Ski"],["board","スノーボード","Snowboard"]].map(([k,j,e])=>`<button type="button" class="${gearState.sport===k?"sel":""}" data-sport="${k}" aria-pressed="${gearState.sport===k}">${ja?j:e}</button>`).join("")}</div>`;
-  tabs.innerHTML = sportSeg + GEAR_LEVELS.map((k,i)=>`<button type="button" class="gear-tab-btn lv lv-${i} ${i===lv?"sel":""}" data-lv="${i}">${t(k)}</button>`).join("");
-  document.querySelectorAll("#gearTabs .gear-tab-btn").forEach(btn=>btn.addEventListener("click", ()=>{ gearState.level = Number(btn.dataset.lv); renderGearTab(); }));
+  tabs.innerHTML = sportSeg + `<button type="button" class="gear-tab-btn ${lv==="base"?"sel":""}" data-lv="base">${ja?"基本装備":"Basics"}</button>` + GEAR_LEVELS.map((k,i)=>`<button type="button" class="gear-tab-btn lv lv-${i} ${i===lv?"sel":""}" data-lv="${i}">${t(k)}</button>`).join("");
+  document.querySelectorAll("#gearTabs .gear-tab-btn").forEach(btn=>btn.addEventListener("click", ()=>{ gearState.level = btn.dataset.lv==="base" ? "base" : Number(btn.dataset.lv); renderGearTab(); }));
   document.querySelectorAll("#gearTabs .sport-seg button").forEach(b=>b.addEventListener("click", ()=>{ gearState.sport = b.dataset.sport; try{ localStorage.setItem("yukinavi_gear_sport", gearState.sport); }catch(e){} renderGearTab(); }));
   setTimeout(()=>document.querySelectorAll("#gearContent .angle-seg button").forEach(b=>b.addEventListener("click", ()=>{ gearState.angle = b.dataset.angle; renderGearTab(); })), 0);
   // おすすめ枠：商品ページへ直接飛ぶ。plan.picks（各レベル）＋上級は運営者が実際に使っている道具
