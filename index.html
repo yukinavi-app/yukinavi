@@ -2568,19 +2568,33 @@ function stationMinutes(r){
   return max;
 }
 
+// 行きやすさ：家を出てからゲレンデに着くまでの目安（分）。単純な距離ではなく、乗り物と乗り継ぎで見る
+function travelMinutes(pref, r){
+  const km = roadKmFrom(pref, r);
+  if(wiz.transport!==1) return Math.round(20 + km / 1.25);   // 車：高速中心で平均時速およそ75km＋出発の20分
+  const route = `${r.timeJa||""} ${r.accessJa||""} ${(r.transit && r.transit.howJa)||""}`;
+  const shinkansen = /新幹線/.test(route) && km <= 400;
+  const rail = shinkansen ? 15 + km / 2.6 : km / 1.0;       // 新幹線は速い。在来線・特急・高速バスは時速60km程度
+  let last = stationMinutes(r);
+  if(last==null) last = 30;
+  if(/路線バス/.test(route)) last = Math.max(last, 25);
+  if(transitOk(r)==="taxi") last += 15;
+  return Math.round(20 + rail + last);                       // 20分＝家から最寄り駅まで
+}
+
 function scoreResort(r, pref, levelIdx, isDayTrip){
   const km = roadKmFrom(pref, r);
   const route = (r.timeJa||"") + (r.accessJa||"");
   const indoor = /屋内|人工芝/.test(r.descJa||"");
   let score = 0;
+  const mins = travelMinutes(pref, r);
   if(isDayTrip){
-    // 新幹線で行けるスキー場は、道のりが長くても日帰りしやすい
-    const eff = (wiz.transport===1 && /新幹線/.test(route) && km <= 300) ? km * 0.5 : km;
-    score -= eff * 0.45;
-    if(eff > 200) score -= 80;
+    // 日帰りは片道の行きやすさが最優先。片道3時間を超えると日帰りは現実的でない
+    score -= mins * 0.4;
+    if(mins > 180) score -= 80 + (mins - 180) * 0.5;
     if(indoor) score -= 40;
   }else{
-    score -= Math.max(0, km - 150) * 0.2 + km * 0.03;
+    score -= Math.max(0, mins - 180) * 0.2 + mins * 0.03;
     if(r.courses!=null) score += Math.min(r.courses, 30);
     if(indoor) score -= 100;
   }
@@ -2604,9 +2618,6 @@ function scoreResort(r, pref, levelIdx, isDayTrip){
   if(wiz.transport===1){
     const ok = transitOk(r);
     score += ok===true ? 15 : ok==="taxi" ? -25 : ok===false ? -60 : -15;
-    // 電車で日帰りなら、駅から長く乗り継ぐスキー場は現実的でない
-    const mins = stationMinutes(r);
-    if(isDayTrip && mins!=null){ if(mins > 90) score -= 35; else if(mins > 60) score -= 15; }
   }
   return score;
 }
@@ -2644,7 +2655,7 @@ function recoMatches(r, fromKm){
   const out = [];
   const isDayTrip = wiz.trip===0;
   out.push(isDayTrip
-    ? (fromKm >= 120 ? ["check", t("matchDayLong")] : ["ok", t(TRIP_OPTS[0])])
+    ? (travelMinutes(PREFECTURES[wiz.prefIdx], r) >= 150 ? ["check", t("matchDayLong")] : ["ok", t(TRIP_OPTS[0])])
     : ["ok", t(TRIP_OPTS[1])]);
   const terr = r.terrain ? r.terrain[terrIdx()] : null;
   out.push([terr==null ? "check" : terr>=20 ? "ok" : "check", t(LEVEL_OPTS[wiz.level])]);
@@ -2722,7 +2733,7 @@ function renderRecommendation(){
   const tripLabel = t(TRIP_OPTS[wiz.trip]);
   const levelLabel = t(LEVEL_OPTS[wiz.level]);
   const isDayTrip = wiz.trip===0;
-  const longTrip = fromKm >= 120;
+  const longTrip = travelMinutes(pref, r) >= 150;
   const stayVerdict = isDayTrip ? (longTrip ? t("stayDayLong") : t("stayDayOk")) : (longTrip ? t("stayRecommend") : t("stayEitherOk"));
   const packing = packingList(r);
   const accessLine = time ? `${time}<br><span class="rv-sub">${t("fromPrefKm")(prefName, fromKm)}</span>` : t("fromPrefKm")(prefName, fromKm);
