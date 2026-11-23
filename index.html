@@ -2009,6 +2009,9 @@ function applyStaticText(){
   document.documentElement.lang = state.lang;
   renderHeroStat();
   updateSubmitState();
+  // 都道府県別の一覧ページはWeb版だけにある（アプリには入れていない）。英語は en/r/
+  const listA = document.getElementById("allListLink");
+  if(listA){ if(IS_NATIVE) listA.hidden = true; else listA.setAttribute("href", state.lang==="en" ? "en/r/" : "r/"); }
   document.querySelectorAll("[data-t]").forEach(el=>{
     const k = el.getAttribute("data-t");
     if(typeof STRINGS[state.lang][k] === "string") el.textContent = t(k);
