@@ -135,7 +135,8 @@ main{padding-block:16px 24px;}
 .price-row{display:flex;justify-content:space-between;align-items:flex-end;margin-top:2px;gap:8px;}
 .price{font-family:var(--font-display);font-size:22px;font-weight:600;line-height:1;}
 .price .num{font-size:22px;}
-.price .unit{font-family:var(--font-body);font-size:11.5px;color:var(--text-muted);font-weight:500;}
+.price{white-space:nowrap;}
+.price .unit{font-family:var(--font-body);font-size:12px;color:var(--text-muted);font-weight:500;white-space:nowrap;}
 .badge{font-size:11px;font-weight:700;border-radius:4px;padding:3px 7px;}
 .badge.student{background:var(--good-soft);color:var(--good);}
 .badge.open-soon{background:#FCE7DD;color:#7F2E0E;}
@@ -283,6 +284,9 @@ html.native p, html.native .prep-txt, html.native .rv, html.native .sheet-sub{-w
 .sport-seg{flex:1 0 100%;margin:0 0 4px;}
 .sport-pick{display:grid;gap:12px;margin:8px 0 4px;}
 .sport-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:12px;padding:22px 16px;font-size:17px;font-weight:800;text-align:left;cursor:pointer;}
+.sport-btn{display:flex;flex-direction:column;gap:6px;position:relative;padding-right:44px;}
+.sport-btn::after{content:"";position:absolute;right:20px;top:50%;width:9px;height:9px;border-top:2.5px solid var(--text-muted);border-right:2.5px solid var(--text-muted);transform:translateY(-50%) rotate(45deg);}
+.sport-btn-d{font-size:13.5px;font-weight:500;color:var(--text-muted);}
 .sport-btn:hover,.sport-btn:focus-visible{border-color:var(--navy);}
 .gear-tab-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:8px;padding:9px 14px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;}
 .gear-tab-btn.sel{background:var(--navy);border-color:var(--navy);color:#fff;}
@@ -525,8 +529,15 @@ ol.gear-list .gear-item::before{counter-increment:gear;content:counter(gear);fon
 .pt-cell{display:flex;flex-direction:column;gap:3px;width:100%;height:100%;min-height:92px;padding:9px 8px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);text-align:left;font:inherit;cursor:pointer;}
 .pt-cell:hover,.pt-cell:focus-visible{border-color:var(--navy);}
 .pt-cell.sel{border:2px solid var(--navy);padding:8px 7px;}
-.pt-brand{font-size:11.5px;font-weight:800;color:var(--text-muted);overflow-wrap:anywhere;}
-.pt-model{font-size:12.5px;font-weight:700;line-height:1.35;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.pt-img{display:block;width:100%;aspect-ratio:1;object-fit:contain;background:#fff;border-radius:6px;margin-bottom:4px;}
+.pt-detail-main{display:flex;gap:12px;align-items:center;margin:4px 0;}
+.pt-detail-img{flex:0 0 112px;}
+.pt-detail-img img{display:block;width:112px;height:112px;object-fit:contain;background:#fff;border-radius:10px;border:1px solid var(--border);}
+.pick-img{float:right;margin:0 0 6px 10px;}
+.pick-img img{display:block;width:84px;height:84px;object-fit:contain;background:#fff;border-radius:8px;border:1px solid var(--border);}
+.pick::after{content:"";display:block;clear:both;}
+.pt-brand{font-size:12px;font-weight:800;color:var(--text-muted);overflow-wrap:anywhere;}
+.pt-model{font-size:13px;font-weight:700;line-height:1.35;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
 .pt-yen{margin-top:auto;font-size:12.5px;font-weight:700;color:var(--accent-text,var(--accent));font-variant-numeric:tabular-nums;}
 .pt-empty{text-align:center;color:var(--text-muted);font-size:13px;padding-top:30px !important;}
 .pt-detail td{padding:8px 0 4px;}
@@ -779,6 +790,87 @@ async function loadAllResorts(){
 }
 // アフィリエイト：楽天は任意のURLを公式の汎用リンク（hgc）で包むと成果計測される
 const AFF = { rakuten: "59db25da.f3366089.59db25db.43c478c4" };
+// 装備の商品写真（楽天の商品画像。楽天アフィリエイトの規約どおり、加工せず楽天のサーバーから表示し、楽天へのリンクと一緒に使う）
+const GEAR_IMG = {
+"auc-hood-inc/swans_h_45r": "auc-hood-inc/cabinet/image9/sns063-1.jpg",
+"auc-follows/sn-itm-gal-149": "auc-follows/cabinet/snowgood2/sw2255-1.jpg",
+"ams-doing/ae5029460": "ams-doing/cabinet/atomic/ae5029460-1.jpg",
+"aspen-skishop/426buf9041": "aspen-skishop/cabinet/25-26/9m/426buf9041.jpg",
+"auc-breakout/thermo-ld": "auc-breakout/cabinet/25-26boot/deeluxe/26-tmids3-1.jpg",
+"aspen-skishop/227dal3001": "aspen-skishop/cabinet/26-27/sk-boots1/227dal3001.jpg",
+"aut/oo7064-92": "aut/cabinet/2021b/oo7064-92_1.jpg",
+"bells-web/10000042-7": "bells-web/cabinet/03869340/03924939/imgrc0122669126.jpg",
+"aut/m004320er995t": "aut/cabinet/2024b/m004320er995t_1.jpg",
+"boomsports-ec/94410": "boomsports-ec/cabinet/18/94410_1.jpg",
+"boushiya-rough/knit24-08": "boushiya-rough/cabinet/item-image/knitcap/knit24-08r.jpg",
+"boomsports-ec/t26btmlsdbn": "boomsports-ec/cabinet/tt/t26btmlsdbn_1.jpg",
+"cloth-harbor/pu2076": "cloth-harbor/cabinet/brand/columbia_2/pu2466-26fw.jpg",
+"dainese/4879995": "dainese/cabinet/file2/4879995_1.jpg",
+"clubits/10009938": "clubits/cabinet/12165798/12167958/imgrc0135531931.jpg",
+"busselstore/oneball-4wd-165g": "busselstore/cabinet/01091036/04829586/imgrc0071130347.jpg",
+"climbs/poc-138694806-h": "climbs/cabinet/1458073/138694806.jpg",
+"e-kanagu/27000150": "e-kanagu/cabinet/26_acc/27000150.jpg",
+"ekosuta/snbsalomon25121": "ekosuta/cabinet/26snb/521100-1.jpg",
+"e-kanagu/38004056": "e-kanagu/cabinet/26_acc/38004056.jpg",
+"elephant-sports/heli-ski": "elephant-sports/cabinet/im-24sw-04/heli-ski-1.jpg",
+"elephant-sports/classic20snow-mip": "elephant-sports/cabinet/im-23sw-04/classic20snow-mip-1.jpg",
+"f-janck/126uni2014": "f-janck/cabinet/25-26/9g/126uni2014.jpg",
+"follows1/sn-bd-burton-084": "follows1/cabinet/2627binding/26brtnbd-cartel-1.jpg",
+"hakubasports/c2jb061309": "hakubasports/cabinet/hakubasports4/2020aw/c2jb061309.jpg",
+"himaraya/0000000883191": "himaraya/cabinet/0000000883a/0000000883191_r1_01.jpg",
+"glv/dee-9": "glv/cabinet/newsingle202412/dee-9rank.jpg",
+"himaraya/0000001002925": "himaraya/cabinet/0000001002e/0000001002925_r1_01.jpg",
+"himaraya/0000001122901": "himaraya/cabinet/0000001122e/0000001122901_r1_01.jpg",
+"himaraya/0000001161711": "himaraya/cabinet/0000001161d/0000001161711_r1_01.jpg",
+"himaraya/0000001202362": "himaraya/cabinet/0000001202b/0000001202362_r1_01.jpg",
+"himaraya/0000001302752": "himaraya/cabinet/0000001302d/0000001302752_r1_01.jpg",
+"himaraya/0000001302749": "himaraya/cabinet/0000001302d/0000001302749_r1_01.jpg",
+"lifestyle-select-trues/619914": "lifestyle-select-trues/cabinet/11041006/619914/619914.jpg",
+"liberty-snow/126uni2018": "liberty-snow/cabinet/25-26/sb-bin/126uni2018.jpg",
+"loupe-studio/axe-g-101": "loupe-studio/cabinet/i-gogls/axe-g-101.jpg",
+"mspnetshop/v2610004": "mspnetshop/cabinet/02529607/03409901/imgrc0213145079.jpg",
+"mondoko/c2ja9641": "mondoko/cabinet/renew/mizuno/breaththermo/c2ja964109_04.jpg",
+"nameless/2640040040005": "nameless/cabinet/26425/2640040040005.jpg",
+"peachboys-tokyo/27bur00325": "peachboys-tokyo/cabinet/26-27/burton/boots/27bur00325.jpg",
+"outdoor-zousan/oakley-mod3": "outdoor-zousan/cabinet/oakleyimg04/oakley-mod3-1.jpg",
+"netonya/10004673": "netonya/cabinet/1501/imgrc0101490640.gif",
+"peachboys-tokyo/27bur00329": "peachboys-tokyo/cabinet/26-27/burton/boots/27bur00329.jpg",
+"rakuzanso/ix20226-2": "rakuzanso/cabinet/clothing/ib/ix20226-24f-nl.jpg",
+"rakuzanso/ix26220-sp": "rakuzanso/cabinet/clothing/ib/ix26220a-tp0.jpg",
+"snb-shop/1142-0086": "snb-shop/cabinet/it223/1142-0086.jpg",
+"ripe/tnf-nn86116": "ripe/cabinet/item/2026_5/tnf-etip-glove_20.jpg",
+"romanjyu/cysy005": "romanjyu/cabinet/11218001/imgrc0118948176.jpg",
+"spg-sports/acs-ax800spc-wt": "spg-sports/cabinet/images3825/acs-ax800spc-wt_1.jpg",
+"sports-ex/27sal00104": "sports-ex/cabinet/26-27/salomon/27sal00104.jpg",
+"sportsx/nn42172": "sportsx/cabinet/2026/11/nn42172_1.jpg",
+"tanabesp/cd106436": "tanabesp/cabinet/2026-0710/cd106436.jpg",
+"tanabesp/cd106156": "tanabesp/cabinet/2024-1228/cd106156.jpg",
+"stylife/ra4479": "stylife/cabinet/item/479/ra4479-01_1.jpg",
+"tanabesp/cd106934": "tanabesp/cabinet/2026-0702/cd106934.jpg",
+"tanabesp/cd107003": "tanabesp/cabinet/2026-1023/cd107003.jpg",
+"tanabesp/cd107175": "tanabesp/cabinet/2026-1016/cd107175.jpg",
+"tanabesp/cd107484": "tanabesp/cabinet/2026-0131/cd107484.jpg",
+"tanabesp/cd110227": "tanabesp/cabinet/2026-0208/cd110227.jpg",
+"tanabesp/cd114194": "tanabesp/cabinet/2026-0827-3/cd114194.jpg",
+"tanabesp/cd114916": "tanabesp/cabinet/2026-0528/cd114916.jpg",
+"tanabesp/cd35481": "tanabesp/cabinet/2018-0413/cd35481.jpg",
+"tanabesp/cd115776": "tanabesp/cabinet/2026-0525-3/cd115776.jpg",
+"tanabesp/cd63643": "tanabesp/cabinet/2024-0909/cd63643.jpg",
+"tanabesp/cd63661": "tanabesp/cabinet/2024-1212/cd63661.jpg",
+"tanabesp/cd65395": "tanabesp/cabinet/2024-0909/cd65395.jpg",
+"tanabesp/cd65399": "tanabesp/cabinet/2024-0909/cd65399.jpg",
+"tanabesp/cd66540": "tanabesp/cabinet/2026-1028/cd66540.jpg",
+"toolfactory/ga00200583": "toolfactory/cabinet/goq001/410_1_bf.jpg",
+"tanabesp/cd69198": "tanabesp/cabinet/2026-1110/cd69198.jpg",
+"toolfactory/ga00200609": "toolfactory/cabinet/goq001/435_1_bf.jpg",
+"westwebstore/k-863653": "westwebstore/cabinet/item_images/863600/863653-863654.jpg",
+"wmsnowboards/27-8006": "wmsnowboards/cabinet/item/26-27/80/27-8006.jpg",
+"yamashita-yamasen/jw-251": "yamashita-yamasen/cabinet/item_images/otafuku_aw/imgrc0110735517.jpg"
+};
+function gearImg(g, px){
+  const k = g && g.rakuten ? (g.rakuten.split("item.rakuten.co.jp/")[1]||"").replace(/\/+$/,"") : "";
+  return GEAR_IMG[k] ? `https://thumbnail.image.rakuten.co.jp/@0_mall/${GEAR_IMG[k]}?_ex=${px}x${px}` : "";
+}
 function rakutenAff(url){
   const e = encodeURIComponent(url);
   return `https://hb.afl.rakuten.co.jp/hgc/${AFF.rakuten}/?pc=${e}&m=${e}`;
@@ -1138,7 +1230,7 @@ const STRINGS = {
     tabNearby:"検索",
     tabDeals:"お得",
     tabGear:"装備",
-    searchPlaceholder:"ゲレンデ名・都道府県で検索",
+    searchPlaceholder:"スキー場名・都道府県で検索",
     chipStudent:"学生・ユース割",
     chipEnglish:"英語対応",
     regionAll:"全エリア",
@@ -1185,13 +1277,13 @@ const STRINGS = {
     placeDesc:"このゲレンデをGoogleマップで直接開きます。",
     placeBtn:"Googleマップを開く",
     lodgingTitle:"近隣の宿泊",
-    lodgingDesc:"楽天トラベルで周辺の宿を検索し、予約は提携サイト側で完了します。",
+    lodgingDesc:"楽天トラベルで周辺の宿を探せます。予約は楽天トラベルで行います。",
     lodgingBtn:"宿泊を探す（楽天トラベルへ）",
     foodTitle:"近隣の飲食店",
     foodDesc:"Googleマップでゲレンデ周辺のレストラン・食堂を検索できます。",
     foodBtn:"周辺のお店を見る（Googleマップへ）",
     gearTitle:"スキー・スノボグッズ",
-    gearDesc:"レンタル・購入どちらもこのゲレンデ名でECサイト検索できます。",
+    gearDesc:"このスキー場の名前で、楽天市場のレンタルや用品を探せます。",
     gearBtn:"グッズを探す（楽天市場へ）",
     disclaimer:"※天気はノルウェー気象研究所（MET Norway、CC BY 4.0）の予報データを3時間ごとに取得して表示しています。山の天気は変わりやすいので、お出かけ前にスキー場の発表もご確認ください。リフト券は各スキー場の公式発表に基づく通常期の窓口価格です（時期・曜日・購入方法で変わります）。",
     liveWeatherBadge:"ライブ",
@@ -1204,7 +1296,7 @@ const STRINGS = {
     sortPrice:"1日券が安い順",
     favToggle:"お気に入りに追加・解除",
     favEmpty:"★をタップするとお気に入りに追加できます",
-    snow7dShort:(n)=>`7日中${n}日 雪予報`,
+    snow7dShort:(n)=>`雪の予報 7日中${n}日`,
     snowDaysVal:(n)=>`${n}日`,
     snowDaysUnit:"日 / 7日",
     wxCredit:`天気：<a href="https://www.met.no/en" target="_blank" rel="noopener">MET Norway</a>（<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>）`,
@@ -1341,7 +1433,7 @@ const STRINGS = {
     rowAccess:"行き方",
     rowWeather:"今日の天気",
     rowPacking:"持ち物リスト",
-    rowStay:"日帰り or 泊まり",
+    rowStay:"日帰り・泊まり",
     stayDayOk:"十分日帰りできます",
     stayDayLong:"日帰りもできますが、移動が長めなので朝早めの出発がおすすめです",
     stayEitherOk:"日帰りでも十分行けます。泊まるなら夜や翌朝もゆっくり滑れます",
@@ -1365,7 +1457,7 @@ const STRINGS = {
     coursesOnlyLabel:"コース数",
     liftsOnlyLabel:"リフト・ゴンドラの数",
     openAlertTitle:(n)=>`${n}が今日オープン`,
-    openAlertBody:"今シーズンの営業が始まります。最新の状況は公式サイトで確認してください。",
+    openAlertBody:"今シーズンの営業が始まります。最新の状況は公式サイトでご確認ください。",
     openAlertSet:"オープン日の朝にお知らせします",
     klookSki:"Klookでリフト券・レンタル",
     barStay:"宿",
@@ -1383,7 +1475,7 @@ const STRINGS = {
     onsenDesc:"ゲレンデ周辺の日帰り温泉をGoogleマップで検索できます。",
     onsenBtn:"周辺の温泉を見る（Googleマップへ）",
     gearTitle2:"装備を探す",
-    gearSub:"レベルを選ぶと、買う順番におすすめの装備が並びます。",
+    gearSub:"レベルごとに、値段・性能・見た目で選んだおすすめを表にしました。",
   },
   en:{
     tagline:"Pick a resort, get ready.",
@@ -2432,8 +2524,8 @@ function renderGearTab(){
   if(!gearState.sport){
     tabs.innerHTML = "";
     document.getElementById("gearContent").innerHTML = `<div class="sport-pick">
-      <button type="button" class="sport-btn" data-sport="ski">${ja?"スキーグッズを探す":"Ski gear"}</button>
-      <button type="button" class="sport-btn" data-sport="board">${ja?"スノボグッズを探す":"Snowboard gear"}</button></div>`;
+      <button type="button" class="sport-btn" data-sport="ski"><span class="sport-btn-t">${ja?"スキーの装備":"Ski gear"}</span><span class="sport-btn-d">${ja?"板・ブーツ・インナーなど":"Skis, boots, base layers and more"}</span></button>
+      <button type="button" class="sport-btn" data-sport="board"><span class="sport-btn-t">${ja?"スノーボードの装備":"Snowboard gear"}</span><span class="sport-btn-d">${ja?"板・ブーツ・インナーなど":"Boards, boots, base layers and more"}</span></button></div>`;
     document.querySelectorAll("#gearContent .sport-btn").forEach(b=>b.addEventListener("click", ()=>{
       gearState.sport = b.dataset.sport; try{ localStorage.setItem("yukinavi_gear_sport", gearState.sport); }catch(e){}
       renderGearTab(); }));
@@ -2474,6 +2566,7 @@ function renderGearTab(){
           const [brand, model] = splitName(ja ? g.ja : g.en);
           const id = `${ri}-${ci}`;
           return `<td><button type="button" class="pt-cell ${open===id?"sel":""}" data-open="${id}" aria-expanded="${open===id}">
+            ${gearImg(g,240) ? `<img class="pt-img" src="${gearImg(g,240)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : ""}
             ${brand ? `<span class="pt-brand">${brand}</span>` : ""}<span class="pt-model">${model}</span>
             ${g.yen ? `<span class="pt-yen">${ja?`約${g.yen.toLocaleString()}円`:`¥${g.yen.toLocaleString()}`}</span>` : ""}</button></td>`;
         }).join("");
@@ -2481,7 +2574,8 @@ function renderGearTab(){
         const og = oc>=0 ? r.cells[cols[oc][0]] : null;
         const detail = og ? `<tr class="pt-detail"><td colspan="${cols.length}">
             <div class="pt-detail-head">${colHead(cols[oc])}${ja?"で選ぶなら":" pick"}</div>
-            <div class="pick-name">${ja?og.ja:og.en}</div>
+            <div class="pt-detail-main">${gearImg(og,400) ? `<a class="pt-detail-img" href="${rakutenAff(og.rakuten)}" target="_blank" rel="noopener sponsored"><img src="${gearImg(og,400)}" alt="${ja?og.ja:og.en}" loading="lazy" referrerpolicy="no-referrer"></a>` : ""}
+            <div class="pick-name">${ja?og.ja:og.en}</div></div>
             ${(ja?og.whyJa:og.whyEn) ? `<p class="pick-why">${ja?og.whyJa:og.whyEn}</p>` : ""}
             <div class="pick-btns">${buyBtns(og)}</div></td></tr>` : "";
         return `<tr class="pt-kind"><th scope="rowgroup" colspan="${cols.length}">${ja?r.ja:r.en}</th></tr><tr>${cells}</tr>${detail}`;
@@ -2491,8 +2585,9 @@ function renderGearTab(){
   const soloHtml = soloRows.length ? (()=>{
     const k = Object.keys(soloRows[0].cells)[0];
     const head = cols.find(c=>c[0]===k);
-    return `<div class="section-label">${ja?`${colHead(head)}のそのほかの道具`:`More of ${colHead(head).toLowerCase()}`}</div><ul class="picks">${soloRows.map(r=>{ const g = r.cells[Object.keys(r.cells)[0]]; return `
+    return `<div class="section-label">${ja?`${colHead(head)}のその他の道具`:`More of ${colHead(head).toLowerCase()}`}</div><ul class="picks">${soloRows.map(r=>{ const g = r.cells[Object.keys(r.cells)[0]]; return `
       <li class="pick">
+        ${gearImg(g,240) ? `<a class="pick-img" href="${rakutenAff(g.rakuten)}" target="_blank" rel="noopener sponsored"><img src="${gearImg(g,240)}" alt="" loading="lazy" referrerpolicy="no-referrer"></a>` : ""}
         <div class="pick-kind">${ja?g.kindJa:g.kindEn}</div>
         <div class="pick-name">${ja?g.ja:g.en}${g.yen ? `<span class="pick-yen">${ja?`約${g.yen.toLocaleString()}円`:`about ¥${g.yen.toLocaleString()}`}</span>` : ""}</div>
         ${(ja?g.whyJa:g.whyEn) ? `<p class="pick-why">${ja?g.whyJa:g.whyEn}</p>` : ""}
@@ -2511,7 +2606,7 @@ function renderGearTab(){
     <p class="gear-intro">${ja?plan.introJa:plan.introEn}</p>
     ${tableHtml ? `<div class="section-label">${ja?"選び方別のおすすめ":"Picks by what matters to you"}</div>${tableHtml}` : ""}
     ${soloHtml}
-    ${restItems.length ? `<div class="section-label">${ja?"そのほかは外部サイトで探す":"Find the rest on Amazon or Rakuten"}</div>` : ""}
+    ${restItems.length ? `<div class="section-label">${ja?"その他の商品を外部サイトで探す":"Find the rest on Amazon or Rakuten"}</div>` : ""}
     <ol class="gear-list">
       ${restItems.map(it=>`
       <li class="gear-item">
