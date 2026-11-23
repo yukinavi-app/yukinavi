@@ -798,6 +798,33 @@ const BEGINNER_PICKS = {
      whyJa:"細身ですっきりした形なので、ヘルメット姿がもっさりしません。MIPS入りで安全面も安心です。", whyEn:"Slim and clean, so you don't look bulky. MIPS inside too."},
   ],
 };
+// 中級のおすすめ：調光ゴーグル・プロテクター・簡易ワックス。CEO承認済み（2026-11-23）。値段は楽天の目安
+const INTERMEDIATE_PICKS = {
+  price:[
+    {kindJa:"調光ゴーグル", kindEn:"Photochromic goggles", ja:"AXE（アックス）AX800-SPC 調光", en:"AXE AX800-SPC photochromic", yen:12000, rakuten:"https://item.rakuten.co.jp/spg-sports/acs-ax800spc-wt/", az:"AXE AX800-SPC 調光 ゴーグル",
+     whyJa:"天気に合わせて色が変わる調光レンズが、この値段で手に入るのはうれしいです。メガネのままでも使えます。", whyEn:"A photochromic lens at this price is a nice find. It fits over glasses too."},
+    {kindJa:"プロテクター", kindEn:"Hip protector", ja:"ARK（エーアールケー）ヒッププロテクター ロング", en:"ARK hip protector (long)", yen:4000, rakuten:"https://item.rakuten.co.jp/clubits/10009938/", az:"ARK ヒッププロテクター スキー",
+     whyJa:"スピードが出てくると、転んだときのお尻への衝撃も大きくなります。まずはこれくらいの手軽なもので十分だと思います。", whyEn:"Falls hit harder as you speed up. A simple pad like this is enough to start."},
+    {kindJa:"ワックス", kindEn:"Wax", ja:"GALLIUM（ガリウム）GENERAL・G 220", en:"Gallium GENERAL・G 220", yen:2300, rakuten:"https://item.rakuten.co.jp/toolfactory/ga00200583/", az:"GALLIUM GENERAL・G 220",
+     whyJa:"塗って拭くだけの簡単なワックスです。これだけでも板の走りが変わるので、まずは試してみて欲しいです。", whyEn:"Just wipe on and buff. Even this changes how your skis glide, so please give it a try."},
+  ],
+  perf:[
+    {kindJa:"調光ゴーグル", kindEn:"Photochromic goggles", ja:"SWANS（スワンズ）RIDGELINE 調光 アジアンフィット", en:"SWANS RIDGELINE photochromic (Asian fit)", yen:32700, rakuten:"https://item.rakuten.co.jp/tanabesp/cd114194/", az:"SWANS RIDGELINE 調光 ゴーグル",
+     whyJa:"明るさに合わせてレンズの濃さが変わるので、一日中レンズ交換いらずです。日本人の顔に合う形なのもよいです。", whyEn:"The tint follows the light, so no lens swaps all day. Shaped for Asian faces, too."},
+    {kindJa:"プロテクター", kindEn:"Hip protector", ja:"DAINESE（ダイネーゼ）FLEX SHORTS", en:"Dainese Flex Shorts", yen:22000, rakuten:"https://item.rakuten.co.jp/dainese/4879995/", az:"DAINESE FLEX SHORTS",
+     whyJa:"お尻と腰まわりをしっかり守ってくれます。動きを邪魔しにくい作りなので、滑りに集中できます。", whyEn:"Solid protection for hips and lower back, without getting in the way of your skiing."},
+    {kindJa:"ワックス", kindEn:"Wax", ja:"DOMINATOR（ドミネーター）ZOOM グラファイト リキッド", en:"Dominator Zoom Graphite liquid", yen:3500, rakuten:"https://item.rakuten.co.jp/himaraya/0000001202362/", az:"DOMINATOR ZOOM GRAPHITE LIQUID",
+     whyJa:"簡易ワックスでも、ちょっといいものを選ぶと滑りの軽さが違います。", whyEn:"Even with quick wax, a better one makes your skis feel lighter."},
+  ],
+  brand:[
+    {kindJa:"ゴーグル", kindEn:"Goggles", ja:"OAKLEY（オークリー）Flow Scape L アジアンフィット", en:"Oakley Flow Scape L (Asian fit)", yen:29800, rakuten:"https://item.rakuten.co.jp/snb-shop/1142-0086/", az:"OAKLEY Flow Scape L",
+     whyJa:"見た目のかっこよさはさすがオークリーです。晴れ用と曇り用の2枚のレンズが付いているので、天気が変わっても安心です。", whyEn:"Classic Oakley style. Comes with a sunny and a cloudy lens, so you're set when the weather turns."},
+    {kindJa:"プロテクター", kindEn:"Hip protector", ja:"BURTON（バートン）Impact Shorts", en:"Burton Impact Shorts", yen:17800, rakuten:"https://item.rakuten.co.jp/e-kanagu/38004056/", az:"BURTON Impact Shorts",
+     whyJa:"定番のブランドで、ウェアの下に着けても目立ちにくいです。", whyEn:"A trusted brand, and it hides well under your pants."},
+    {kindJa:"ワックス", kindEn:"Wax", ja:"VOLA（ボラ）MX NO FLUOR リキッド", en:"Vola MX No Fluor liquid", yen:4800, rakuten:"https://item.rakuten.co.jp/himaraya/0000001161711/", az:"VOLA MX NO FLUOR",
+     whyJa:"フランスのブランドで、レースの世界でも使われています。持っているだけで気分が上がります。", whyEn:"A French brand used in racing. Just having it gets you excited to ski."},
+  ],
+};
 const PICK_ANGLES = [["price","値段重視","Best price"],["perf","性能重視","Best performance"],["brand","ブランド重視","Best looks"]];
 
 // レベル別の装備：上から順に「買う順番」
@@ -816,6 +843,7 @@ const GEAR_PLAN = [
       {ja:"板・ビンディングのセット", en:"Skis with bindings", whyJa:"最後でOK。初心者向けの短めで柔らかいセットが扱いやすいです。", whyEn:"Last on the list. A shorter, softer beginner set is easiest to control.", q:"スキー板 初心者 セット ビンディング"},
     ]},
   { // 中級
+    picksBy:INTERMEDIATE_PICKS,
     introJa:"ターンが安定してきたら、道具で上達が変わる段階です。まずはブーツと板を自分に合ったものに。",
     introEn:"Once your turns are stable, gear starts to make a difference. Get boots and skis that suit you.",
     items:[
