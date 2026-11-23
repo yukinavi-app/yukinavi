@@ -2549,7 +2549,7 @@ function renderGearTab(){
   cols.forEach(([k])=>plan.picksBy[k].forEach(g=>{
     const key = rowKey(g.kindJa);
     let row = rows.find(r=>r.key===key);
-    if(!row){ row = {key, ja:key, en:g.kindEn.replace(/^Photochromic /i,""), cells:{}}; rows.push(row); }
+    if(!row){ row = {key, ja:key, en:g.kindEn.replace(/^Photochromic /i,"").replace(/^./,c=>c.toUpperCase()), cells:{}}; rows.push(row); }
     row.cells[k] = g;
   }));
   // 1列にしか無い種類（開発者愛用だけの道具など）は表に入れず、下にまとめる
