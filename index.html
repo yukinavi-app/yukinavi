@@ -272,6 +272,10 @@ html.native p, html.native .prep-txt, html.native .rv, html.native .sheet-sub{-w
 
 /* gear */
 .gear-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+.sport-seg{flex:1 0 100%;margin:0 0 4px;}
+.sport-pick{display:grid;gap:12px;margin:8px 0 4px;}
+.sport-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:12px;padding:22px 16px;font-size:17px;font-weight:800;text-align:left;cursor:pointer;}
+.sport-btn:hover,.sport-btn:focus-visible{border-color:var(--navy);}
 .gear-tab-btn{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:8px;padding:9px 14px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;}
 .gear-tab-btn.sel{background:var(--navy);border-color:var(--navy);color:#fff;}
 .gear-tab-btn .dot-missing{width:6px;height:6px;border-radius:50%;background:var(--text-muted);opacity:0.5;}
@@ -825,6 +829,78 @@ const INTERMEDIATE_PICKS = {
      whyJa:"フランスのブランドで、レースの世界でも使われています。持っているだけで気分が上がります。", whyEn:"A French brand used in racing. Just having it gets you excited to ski."},
   ],
 };
+// 上級（レーサー・競技者向け）：値段／性能／開発者愛用。開発者愛用はCEOが実際に使っている道具（2026-11-23）
+const ADVANCED_PICKS = {
+  price:[
+    {kindJa:"SLの板", kindEn:"Slalom skis", ja:"HEAD（ヘッド）WC Rebels e.SLR + PR 11", en:"Head WC Rebels e.SLR + PR 11", yen:101200, rakuten:"https://item.rakuten.co.jp/tanabesp/cd115776/", az:"HEAD WC Rebels e.SLR",
+     whyJa:"市民レースやポール練習なら、まずはこれで十分だと思います。ショートターンのキレはしっかりあります。", whyEn:"Plenty for club races and gate training, with a sharp short turn."},
+    {kindJa:"レーシングブーツ", kindEn:"Race boots", ja:"ATOMIC（アトミック）REDSTER CS 130", en:"Atomic Redster CS 130", yen:81400, rakuten:"https://item.rakuten.co.jp/ams-doing/ae5029460/", az:"ATOMIC REDSTER CS 130",
+     whyJa:"硬さ130のレーシングブーツが、この値段で手に入るのはありがたいです。ただ、ブーツだけはお店で足に合わせてから買って欲しいです...", whyEn:"A flex-130 race boot at a fair price. Please get boots fitted in a shop before you buy, though."},
+    {kindJa:"ストック", kindEn:"Poles", ja:"LEKI（レキ）WCR LITE SL 3D", en:"Leki WCR Lite SL 3D", yen:12100, rakuten:"https://item.rakuten.co.jp/tanabesp/cd65399/", az:"LEKI WCR LITE SL 3D",
+     whyJa:"ポールをはじいても手を痛めにくい、SL用のガード付きです。これより安いものだと、旗門を倒すときに心配です。", whyEn:"Slalom guards protect your hands when you clear gates. I'd worry with anything cheaper."},
+  ],
+  perf:[
+    {kindJa:"SLの板", kindEn:"Slalom skis", ja:"ATOMIC（アトミック）REDSTER S9 FIS 165 + ICON RS 16", en:"Atomic Redster S9 FIS 165 + Icon RS 16", yen:215900, rakuten:"https://item.rakuten.co.jp/tanabesp/cd110227/", az:"ATOMIC REDSTER S9 FIS",
+     whyJa:"FIS規格の165cmで、そのまま大会に出られる本物のSL板です。ワールドカップでも使われているシリーズです。", whyEn:"A FIS-legal 165cm slalom ski, ready for real races. The same series raced on the World Cup."},
+    {kindJa:"レーシングブーツ", kindEn:"Race boots", ja:"HEAD（ヘッド）RAPTOR WCR 130S PV", en:"Head Raptor WCR 130S PV", yen:95000, rakuten:"https://item.rakuten.co.jp/tanabesp/cd107484/", az:"HEAD RAPTOR WCR 130",
+     whyJa:"板に力がダイレクトに伝わる、競技用の硬いブーツです。そのぶん足に合わせる手間はかかりますが、合えば手放せなくなると思います。", whyEn:"A stiff race boot that sends every move to the ski. It takes fitting work, but once it fits you won't let it go."},
+    {kindJa:"ストック", kindEn:"Poles", ja:"LEKI（レキ）WCR TBS SL 3D", en:"Leki WCR TBS SL 3D", yen:19800, rakuten:"https://item.rakuten.co.jp/tanabesp/cd65395/", az:"LEKI WCR TBS SL 3D",
+     whyJa:"ストラップをワンタッチで外せるので、スタート前の準備が楽です。", whyEn:"The strap clicks in and out, which makes the start area easier."},
+  ],
+  mine:[
+    {kindJa:"SLの板", kindEn:"Slalom skis", ja:"VOLKL（フォルクル）RACETIGER SL 165cm + RMotion T12", en:"Völkl Racetiger SL 165cm + rMotion T12", yen:176000, rakuten:"https://item.rakuten.co.jp/mspnetshop/v2610004/", az:"VOLKL RACETIGER SL",
+     whyJa:"私が使っている板です。切り替えが速く、小回りで板がよく走ってくれます。", whyEn:"The skis I use. Quick edge to edge, and they keep running through short turns."},
+    {kindJa:"GSの板", kindEn:"Giant slalom skis", ja:"VOLKL（フォルクル）RACETIGER GS WC 183cm + XCOMP 16", en:"Völkl Racetiger GS WC 183cm + XComp 16", rakuten:"https://search.rakuten.co.jp/search/mall/VOLKL+RACETIGER+GS+WC/", az:"VOLKL RACETIGER GS WC",
+     whyJa:"大回りではこの板を使っています。長さがあるぶん高速でもぶれにくく、安心して踏んでいけます。", whyEn:"My giant slalom skis. The length keeps them calm at speed, so you can commit."},
+    {kindJa:"レーシングブーツ", kindEn:"Race boots", ja:"DALBELLO（ダルベロ）DRS WC S", en:"Dalbello DRS WC S", yen:105600, rakuten:"https://item.rakuten.co.jp/aspen-skishop/227dal3001/", az:"DALBELLO DRS WC S",
+     whyJa:"これも私が履いているブーツです。足首まわりがしっかりしていて、板にすぐ力が伝わります。", whyEn:"The boots I wear. Firm around the ankle, so the ski reacts right away."},
+    {kindJa:"ストック", kindEn:"Poles", ja:"SINANO（シナノ）フリーFAST-α", en:"Sinano Free FAST-α", yen:21560, rakuten:"https://item.rakuten.co.jp/tanabesp/cd114916/", az:"SINANO フリーFAST-α",
+     whyJa:"長さを変えられるので、ポール練習と普段のフリー滑走のどちらにも使っています。", whyEn:"Adjustable length, so I use them for both gate training and free skiing."},
+    {kindJa:"ヘルメット", kindEn:"Helmet", ja:"POC（ポック）Skull Dura X MIPS", en:"POC Skull Dura X MIPS", yen:49500, rakuten:"https://item.rakuten.co.jp/tanabesp/cd64641/", az:"POC Skull Dura X MIPS",
+     whyJa:"FIS規格に対応したレース用のヘルメットです。大会に出るなら、頭はここまで守って欲しいです。", whyEn:"A FIS-certified race helmet. If you race, this is the level of protection I'd want for you."},
+    {kindJa:"ブーツ用バッグ", kindEn:"Boot bag", ja:"VOLKL（フォルクル）RACE BOOT PACK", en:"Völkl Race Boot Pack", yen:11500, rakuten:"https://item.rakuten.co.jp/tanabesp/cd63643/", az:"VOLKL RACE BOOT PACK",
+     whyJa:"ブーツとヘルメット、小物までまとめて背負えるので、遠征のときに助かっています。", whyEn:"Boots, helmet and small gear all in one pack. A big help on race trips."},
+    {kindJa:"スキーケース", kindEn:"Ski bag", ja:"VOLKL（フォルクル）SKIBAG JP 170cm", en:"Völkl Skibag JP 170cm", yen:5980, rakuten:"https://item.rakuten.co.jp/tanabesp/cd63661/", az:"VOLKL スキーケース",
+     whyJa:"SLの板を持ち運ぶのにちょうどいい長さです。", whyEn:"Just the right length for carrying slalom skis."},
+  ],
+};
+const ADV_ANGLES = [["price","値段重視","Best price"],["perf","性能重視","Best performance"],["mine","開発者愛用","What I use"]];
+
+// スノーボード：レベル別の装備（おすすめ商品はCEO承認後に picksBy を追加）
+const BOARD_PLAN = [
+  { // 初心者
+    introJa:"最初はレンタルで十分です。スノーボードは転ぶ回数が多いので、まずは体を守るものから。",
+    introEn:"Rent everything at first. Snowboarding means lots of falls, so start with things that protect you.",
+    items:[
+      {ja:"お尻・ひざのプロテクター", en:"Hip & knee pads", whyJa:"最初は尻もちとひざつきの連続です。これがあるだけで痛さと冷たさがかなり違います。", whyEn:"You'll land on your bum and knees a lot at first. Pads make it far less painful and cold.", q:"スノーボード プロテクター お尻 膝"},
+      {ja:"スノーボード用グローブ", en:"Snowboard gloves", whyJa:"雪に手をつくことが多いので、防水で手首まで覆うものを。", whyEn:"Your hands touch the snow often. Get waterproof gloves that cover your wrists.", q:"スノーボード グローブ 防水"},
+      {ja:"ゴーグル", en:"Goggles", whyJa:"雪の照り返しは想像以上に眩しい。メガネの人は「メガネ対応」を。", whyEn:"Snow glare is stronger than you expect. If you wear glasses, get an over-glasses (OTG) model.", q:"スノーボード ゴーグル メガネ対応"},
+      {ja:"ヘルメット", en:"Helmet", whyJa:"後ろに転んで頭を打ちやすいのがスノーボードです。最初こそかぶって欲しいです。", whyEn:"Falling backwards and hitting your head is common on a board. Wear one from day one.", q:"スノーボード ヘルメット"},
+      {ja:"速乾インナー・ネックウォーマー", en:"Base layer & neck warmer", whyJa:"綿は汗で冷えます。化繊かウールを。", whyEn:"Cotton stays wet and chills you. Choose synthetic or wool.", q:"スノーボード インナー 速乾"},
+      {ja:"ブーツ", en:"Boots", whyJa:"続けるなら最初に買う大物。足に合わないと痛くて楽しめないので、お店で履いて選ぶのがおすすめです。", whyEn:"The first big item to buy if you continue. Try them on in a shop if you can.", q:"スノーボード ブーツ BOA"},
+      {ja:"ウェア上下", en:"Jacket & pants", whyJa:"座ることが多いので、パンツは防水がしっかりしたものを。", whyEn:"You'll sit in the snow a lot, so get well-waterproofed pants.", q:"スノーボードウェア 上下"},
+      {ja:"板・ビンディングのセット", en:"Board & bindings set", whyJa:"最後でOK。柔らかめの板がターンを覚えやすいです。", whyEn:"Last on the list. A softer board makes turns easier to learn.", q:"スノーボード 板 ビンディング セット 初心者"},
+    ]},
+  { // 中級
+    introJa:"ターンがつながってきたら、自分に合った道具で上達が変わる段階です。",
+    introEn:"Once your turns link up, gear that suits you starts to make a difference.",
+    items:[
+      {ja:"オールラウンドの板", en:"All-mountain board", whyJa:"圧雪も少しの新雪もこなせる一本。", whyEn:"One board for groomed runs and a bit of fresh snow.", q:"スノーボード 板 オールラウンド"},
+      {ja:"ビンディング", en:"Bindings", whyJa:"板への力の伝わり方が変わります。着脱が楽なリアエントリーやステップオンも人気です。", whyEn:"Changes how your movement reaches the board. Rear-entry and step-on types are easy to use.", q:"スノーボード ビンディング"},
+      {ja:"調光ゴーグル", en:"Photochromic goggles", whyJa:"晴れでも曇りでもレンズ交換いらず。", whyEn:"Adjusts to sun and cloud, no lens swaps.", q:"スノーボード ゴーグル 調光"},
+      {ja:"背中・お尻のプロテクター", en:"Back & hip protector", whyJa:"スピードが上がってきたら、背中もしっかり守るものを。", whyEn:"As you get faster, protect your back too.", q:"スノーボード プロテクター 脊椎"},
+      {ja:"簡易ワックス", en:"Quick wax", whyJa:"塗るだけで板の走りが変わります。", whyEn:"Even quick wax makes your board glide noticeably better.", q:"スノーボード ワックス 簡易"},
+    ]},
+  { // 上級
+    introJa:"ここから先は、パーク・パウダー・カービングなど滑りたいスタイル次第です。",
+    introEn:"From here it depends on your style: park, powder or carving.",
+    items:[
+      {ja:"スタイル別の板", en:"Style-specific board", whyJa:"パーク用は柔らかく、パウダー用はノーズが長く、カービング用は硬めが基本です。", whyEn:"Park boards are soft, powder boards have long noses, carving boards are stiff.", q:"スノーボード 板 カービング パウダー"},
+      {ja:"硬めのブーツ", en:"Stiffer boots", whyJa:"高速やカービングでは、硬めのブーツの方が力が逃げません。", whyEn:"At speed and on edge, a stiffer boot keeps your power from leaking.", q:"スノーボード ブーツ 硬め"},
+      {ja:"ホットワックス・チューンナップ用品", en:"Hot wax & tuning kit", whyJa:"自分で手入れできると、板の調子をいつも同じに保てます。", whyEn:"Tuning your own board keeps it running the same every day.", q:"スノーボード ホットワックス セット"},
+      {ja:"ボードケース", en:"Board bag", whyJa:"遠征や飛行機に持っていくなら、クッションの入ったものを。", whyEn:"For trips and flights, get a padded one.", q:"スノーボード ケース"},
+    ]},
+];
 const PICK_ANGLES = [["price","値段重視","Best price"],["perf","性能重視","Best performance"],["brand","ブランド重視","Best looks"]];
 
 // レベル別の装備：上から順に「買う順番」
@@ -856,10 +932,14 @@ const GEAR_PLAN = [
   { // 上級
     introJa:"ここから先は好みと目的次第。現役インストラクターでアルペン競技の経験もある運営者のおすすめを載せています。",
     introEn:"From here it depends on your goals. These are picks from a working ski instructor with an alpine racing background.",
-    curated:true,
+    picksBy:ADVANCED_PICKS, angles:ADV_ANGLES,
     items:[
+      {ja:"GSの板", en:"Giant slalom skis", whyJa:"大回りの種目に出るなら、SLとは別にもう一本。", whyEn:"If you race giant slalom, you'll need a second pair.", q:"スキー板 GS レーシング"},
+      {ja:"レーシングワンピース", en:"Race suit", whyJa:"風の抵抗が減り、ポールにも引っかかりにくくなります。", whyEn:"Less drag, and it won't snag on gates.", q:"スキー レーシングワンピース"},
+      {ja:"すね当て・ハンドガード", en:"Shin & hand guards", whyJa:"SLでポールをはじくときに、すねと手を守ります。", whyEn:"Protect your shins and hands when you clear slalom gates.", q:"スキー レガース ハンドガード SL"},
+      {ja:"チンガード（あご当て）", en:"Chin guard", whyJa:"SL用のヘルメットに付けて、顔にポールが当たるのを防ぎます。", whyEn:"Clips onto a slalom helmet to keep gates off your face.", q:"スキー ヘルメット チンガード"},
+      {ja:"ホットワックス・チューンナップ用品", en:"Hot wax & tuning kit", whyJa:"レースではエッジとワックスの差がそのままタイムに出ます。", whyEn:"In racing, edges and wax show up directly in your time.", q:"スキー ホットワックス チューンナップ セット"},
       {ja:"基礎スキー向けの板", en:"Technical skis", whyJa:"検定や基礎の練習なら、基礎系モデルを。", whyEn:"For technique and certification training, choose a technical model.", q:"スキー板 基礎"},
-      {ja:"レーシングブーツ", en:"Race boots", whyJa:"足にぴったり合わせることが前提の硬いブーツ。", whyEn:"Stiff boots that only work when fitted closely to your feet.", q:"スキーブーツ レーシング"},
     ]},
 ];
 
@@ -2163,13 +2243,30 @@ function dealsForResort(r){
 }
 
 
-const gearState = {selected: GEAR_CATEGORIES[0].id, level: null, angle: "price"};
+let GEAR_SPORT = null; try{ GEAR_SPORT = localStorage.getItem("yukinavi_gear_sport"); }catch(e){}
+const gearState = {selected: GEAR_CATEGORIES[0].id, level: null, angle: "price", sport: GEAR_SPORT};
 function renderGearTab(){
-  const lv = gearState.level ?? (wiz.level==null ? 0 : terrIdx());
-  const plan = GEAR_PLAN[lv];
   const ja = state.lang==="ja";
-  document.getElementById("gearTabs").innerHTML = GEAR_LEVELS.map((k,i)=>`<button type="button" class="gear-tab-btn lv lv-${i} ${i===lv?"sel":""}" data-lv="${i}">${t(k)}</button>`).join("");
+  const tabs = document.getElementById("gearTabs");
+  // 最初にスキーかスノーボードかを選ぶ
+  if(!gearState.sport){
+    tabs.innerHTML = "";
+    document.getElementById("gearContent").innerHTML = `<div class="sport-pick">
+      <button type="button" class="sport-btn" data-sport="ski">${ja?"スキーグッズを探す":"Ski gear"}</button>
+      <button type="button" class="sport-btn" data-sport="board">${ja?"スノボグッズを探す":"Snowboard gear"}</button></div>`;
+    document.querySelectorAll("#gearContent .sport-btn").forEach(b=>b.addEventListener("click", ()=>{
+      gearState.sport = b.dataset.sport; try{ localStorage.setItem("yukinavi_gear_sport", gearState.sport); }catch(e){}
+      renderGearTab(); }));
+    return;
+  }
+  const lv = gearState.level ?? (wiz.level==null ? 0 : terrIdx());
+  const plan = (gearState.sport==="board" ? BOARD_PLAN : GEAR_PLAN)[lv];
+  const angles = plan.angles || PICK_ANGLES;
+  if(plan.picksBy && !plan.picksBy[gearState.angle]) gearState.angle = "price";
+  const sportSeg = `<div class="angle-seg sport-seg" role="group" aria-label="${ja?"スキーかスノーボード":"Ski or snowboard"}">${[["ski","スキー","Ski"],["board","スノーボード","Snowboard"]].map(([k,j,e])=>`<button type="button" class="${gearState.sport===k?"sel":""}" data-sport="${k}" aria-pressed="${gearState.sport===k}">${ja?j:e}</button>`).join("")}</div>`;
+  tabs.innerHTML = sportSeg + GEAR_LEVELS.map((k,i)=>`<button type="button" class="gear-tab-btn lv lv-${i} ${i===lv?"sel":""}" data-lv="${i}">${t(k)}</button>`).join("");
   document.querySelectorAll("#gearTabs .gear-tab-btn").forEach(btn=>btn.addEventListener("click", ()=>{ gearState.level = Number(btn.dataset.lv); renderGearTab(); }));
+  document.querySelectorAll("#gearTabs .sport-seg button").forEach(b=>b.addEventListener("click", ()=>{ gearState.sport = b.dataset.sport; try{ localStorage.setItem("yukinavi_gear_sport", gearState.sport); }catch(e){} renderGearTab(); }));
   setTimeout(()=>document.querySelectorAll("#gearContent .angle-seg button").forEach(b=>b.addEventListener("click", ()=>{ gearState.angle = b.dataset.angle; renderGearTab(); })), 0);
   // おすすめ枠：商品ページへ直接飛ぶ。plan.picks（各レベル）＋上級は運営者が実際に使っている道具
   const picks = [...(plan.picksBy ? plan.picksBy[gearState.angle] : (plan.picks||[])), ...(plan.curated ? GEAR_CATEGORIES.filter(g=>g.real).map(g=>({ja:g.productJa, en:g.productEn, kindJa:g.ja, kindEn:g.en, whyJa:g.whyJa, whyEn:g.whyEn, rakuten:g.url, amazon:g.amazon})) : [])];
@@ -2182,7 +2279,7 @@ function renderGearTab(){
       </li>`).join("");
   document.getElementById("gearContent").innerHTML = `
     <p class="gear-intro">${ja?plan.introJa:plan.introEn}</p>
-    ${pickHtml ? `<div class="section-label">${ja?"運営者のおすすめ":"My picks"}</div>${plan.picksBy ? `<div class="angle-seg" role="group" aria-label="${ja?"選び方":"Pick by"}">${PICK_ANGLES.map(([k,j,e])=>`<button type="button" class="${gearState.angle===k?"sel":""}" data-angle="${k}" aria-pressed="${gearState.angle===k}">${ja?j:e}</button>`).join("")}</div>` : ""}<ul class="picks">${pickHtml}</ul><div class="section-label">${ja?"そのほかはAmazon・楽天で探す":"Find the rest on Amazon or Rakuten"}</div>` : ""}
+    ${pickHtml ? `<div class="section-label">${ja?"運営者のおすすめ":"My picks"}</div>${plan.picksBy ? `<div class="angle-seg" role="group" aria-label="${ja?"選び方":"Pick by"}">${angles.map(([k,j,e])=>`<button type="button" class="${gearState.angle===k?"sel":""}" data-angle="${k}" aria-pressed="${gearState.angle===k}">${ja?j:e}</button>`).join("")}</div>` : ""}<ul class="picks">${pickHtml}</ul><div class="section-label">${ja?"そのほかはAmazon・楽天で探す":"Find the rest on Amazon or Rakuten"}</div>` : ""}
     <ol class="gear-list">
       ${plan.items.map(it=>`
       <li class="gear-item">
