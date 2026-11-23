@@ -511,6 +511,12 @@ ol.gear-list .gear-item::before{counter-increment:gear;content:counter(gear);fon
 .pick-name{font-size:15.5px;font-weight:700;line-height:1.4;margin-top:2px;}
 .pick-why{margin:6px 0 0;font-size:13.5px;line-height:1.65;}
 .pick-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+
+.angle-seg{display:flex;gap:0;margin:0 0 10px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--surface);}
+.angle-seg button{flex:1 1 0;border:none;background:transparent;color:var(--text);font-size:13px;font-weight:700;padding:10px 4px;cursor:pointer;}
+.angle-seg button + button{border-left:1px solid var(--border);}
+.angle-seg button.sel{background:var(--navy);color:#fff;}
+.pick-yen{display:inline-block;margin-left:8px;font-size:12.5px;font-weight:700;color:var(--text-muted);}
 </style>
 </head>
 <body>
@@ -764,9 +770,40 @@ function rakutenSearch(keyword){ return rakutenAff(`https://search.rakuten.co.jp
 const AMAZON_TAG = "schi01-22";
 function amazonSearch(keyword){ return `https://www.amazon.co.jp/s?k=${encodeURIComponent(keyword)}&tag=${AMAZON_TAG}`; }
 
+
+// 初心者のおすすめ：観点（値段／性能／ブランド）ごとにグローブ・ゴーグル・ヘルメットを1つずつ。CEO承認済み（2026-11-23）。値段は楽天の目安
+const BEGINNER_PICKS = {
+  price:[
+    {kindJa:"スキーグローブ", kindEn:"Ski gloves", ja:"REUSCH（ロイシュ）VENOM R-TEX XT", en:"Reusch Venom R-TEX XT", yen:5500, rakuten:"https://item.rakuten.co.jp/tanabesp/cd66540/", az:"REUSCH VENOM R-TEX XT",
+     whyJa:"グローブは濡れるとその日一日がつらくなります。5千円台でしっかり防水が入っているのはこのあたりまでで、これより安いものは正直おすすめしにくいです...", whyEn:"Wet gloves end your day. This is about the cheapest pair with a real waterproof membrane."},
+    {kindJa:"ゴーグル", kindEn:"Goggles", ja:"AXE（アックス）AX800-WCM", en:"AXE AX800-WCM", yen:5900, rakuten:"https://item.rakuten.co.jp/loupe-studio/axe-g-101/", az:"AXE AX800-WCM ゴーグル",
+     whyJa:"最初のゴーグルならこれで十分です。メガネのままかけられますし、二重レンズで曇りにくいのもよいです。", whyEn:"Plenty for your first goggles. Fits over glasses, and the double lens resists fogging."},
+    {kindJa:"ヘルメット", kindEn:"Helmet", ja:"SWANS（スワンズ）H-451R", en:"SWANS H-451R", yen:7700, rakuten:"https://item.rakuten.co.jp/auc-hood-inc/swans_h_45r/", az:"SWANS H-451R ヘルメット",
+     whyJa:"頭の保護はケチらないで欲しいので、これより安いものはおすすめしません。レビューも多い定番の入門モデルです。", whyEn:"Don't save money on your head. A well-reviewed entry model from a Japanese maker."},
+  ],
+  perf:[
+    {kindJa:"スキーグローブ", kindEn:"Ski gloves", ja:"HESTRA（ヘストラ）Heli Ski", en:"Hestra Heli Ski", yen:19800, rakuten:"https://item.rakuten.co.jp/elephant-sports/heli-ski/", az:"HESTRA Heli Ski グローブ",
+     whyJa:"革のグローブは使うほど手になじんでいきます。暖かくて丈夫なので何シーズンも使えて、結果的にコスパもよいです。", whyEn:"Leather molds to your hands, stays warm and lasts for seasons."},
+    {kindJa:"ゴーグル", kindEn:"Goggles", ja:"SMITH（スミス）I/O MAG アジアンフィット", en:"Smith I/O MAG (Asian fit)", yen:37000, rakuten:"https://item.rakuten.co.jp/aut/m004320er995t/", az:"SMITH I/O MAG アジアンフィット",
+     whyJa:"磁石でレンズをさっと替えられます。晴れの日と曇りの日では雪の見え方がまったく違うので、長く続けるならこのくらいのものが欲しくなります。", whyEn:"Magnetic lenses swap in seconds. Sunny and cloudy days look completely different on the snow."},
+    {kindJa:"ヘルメット", kindEn:"Helmet", ja:"SMITH Vantage 2 MIPS", en:"Smith Vantage 2 MIPS", yen:39800, rakuten:"https://item.rakuten.co.jp/tanabesp/cd107175/", az:"SMITH Vantage 2 MIPS",
+     whyJa:"転んだときに頭にかかるねじれを減らすMIPS入りです。ダイヤルでサイズをきっちり合わせられるので、一日かぶっていても疲れにくいです。", whyEn:"MIPS reduces rotational force in a fall, and the dial fit stays comfortable all day."},
+  ],
+  brand:[
+    {kindJa:"スキーグローブ", kindEn:"Ski gloves", ja:"GOLDWIN（ゴールドウイン）マルチスキーグローブ", en:"Goldwin Multi Ski Gloves", yen:9900, rakuten:"https://item.rakuten.co.jp/tanabesp/cd106436/", az:"GOLDWIN G85302 グローブ",
+     whyJa:"日本のブランドで、シンプルなので合わせやすいです。どんなウェアにもなじみます。", whyEn:"A Japanese brand with a clean look that goes with any jacket."},
+    {kindJa:"ゴーグル", kindEn:"Goggles", ja:"OAKLEY（オークリー）Flight Deck M", en:"Oakley Flight Deck M", yen:22000, rakuten:"https://item.rakuten.co.jp/aut/oo7064-92/", az:"OAKLEY Flight Deck M",
+     whyJa:"縁のない形がとにかくかっこいいです。PRIZMレンズは雪のでこぼこが見やすく、見た目だけのゴーグルではありません。", whyEn:"The frameless look is iconic, and the Prizm lens shows bumps in the snow clearly."},
+    {kindJa:"ヘルメット", kindEn:"Helmet", ja:"GIRO（ジロ）Ledge FS MIPS", en:"Giro Ledge FS MIPS", yen:15800, rakuten:"https://item.rakuten.co.jp/tanabesp/cd107003/", az:"GIRO Ledge FS MIPS",
+     whyJa:"細身ですっきりした形なので、ヘルメット姿がもっさりしません。MIPS入りで安全面も安心です。", whyEn:"Slim and clean, so you don't look bulky. MIPS inside too."},
+  ],
+};
+const PICK_ANGLES = [["price","値段重視","Best price"],["perf","性能重視","Best performance"],["brand","ブランド重視","Best looks"]];
+
 // レベル別の装備：上から順に「買う順番」
 const GEAR_PLAN = [
   { // 初心者
+    picksBy:BEGINNER_PICKS,
     introJa:"最初はレンタルで十分です。自分で買うなら、肌に触れる小物から。続けると決めたら、次はブーツです。",
     introEn:"Rent everything at first. If you buy, start with the small things that touch your skin. Once you know you'll keep skiing, buy boots next.",
     items:[
@@ -2098,25 +2135,26 @@ function dealsForResort(r){
 }
 
 
-const gearState = {selected: GEAR_CATEGORIES[0].id, level: null};
+const gearState = {selected: GEAR_CATEGORIES[0].id, level: null, angle: "price"};
 function renderGearTab(){
   const lv = gearState.level ?? (wiz.level==null ? 0 : terrIdx());
   const plan = GEAR_PLAN[lv];
   const ja = state.lang==="ja";
   document.getElementById("gearTabs").innerHTML = GEAR_LEVELS.map((k,i)=>`<button type="button" class="gear-tab-btn lv lv-${i} ${i===lv?"sel":""}" data-lv="${i}">${t(k)}</button>`).join("");
   document.querySelectorAll("#gearTabs .gear-tab-btn").forEach(btn=>btn.addEventListener("click", ()=>{ gearState.level = Number(btn.dataset.lv); renderGearTab(); }));
+  setTimeout(()=>document.querySelectorAll("#gearContent .angle-seg button").forEach(b=>b.addEventListener("click", ()=>{ gearState.angle = b.dataset.angle; renderGearTab(); })), 0);
   // おすすめ枠：商品ページへ直接飛ぶ。plan.picks（各レベル）＋上級は運営者が実際に使っている道具
-  const picks = [...(plan.picks||[]), ...(plan.curated ? GEAR_CATEGORIES.filter(g=>g.real).map(g=>({ja:g.productJa, en:g.productEn, kindJa:g.ja, kindEn:g.en, whyJa:g.whyJa, whyEn:g.whyEn, rakuten:g.url, amazon:g.amazon})) : [])];
+  const picks = [...(plan.picksBy ? plan.picksBy[gearState.angle] : (plan.picks||[])), ...(plan.curated ? GEAR_CATEGORIES.filter(g=>g.real).map(g=>({ja:g.productJa, en:g.productEn, kindJa:g.ja, kindEn:g.en, whyJa:g.whyJa, whyEn:g.whyEn, rakuten:g.url, amazon:g.amazon})) : [])];
   const pickHtml = picks.map(g=>`
       <li class="pick">
         <div class="pick-kind">${ja?g.kindJa:g.kindEn}</div>
-        <div class="pick-name">${ja?g.ja:g.en}</div>
+        <div class="pick-name">${ja?g.ja:g.en}${g.yen ? `<span class="pick-yen">${ja?`約${g.yen.toLocaleString()}円`:`about ¥${g.yen.toLocaleString()}`}</span>` : ""}</div>
         ${(ja?g.whyJa:g.whyEn) ? `<p class="pick-why">${ja?g.whyJa:g.whyEn}</p>` : ""}
-        <div class="pick-btns">${g.amazon ? `<a class="cta-btn" href="${g.amazon}" target="_blank" rel="noopener sponsored">${ja?"Amazonで見る":"View on Amazon"}</a>` : ""}${g.rakuten ? `<a class="cta-btn ${g.amazon?"sec":""}" href="${g.rakuten}" target="_blank" rel="noopener sponsored">${ja?"楽天で見る":"View on Rakuten"}</a>` : ""}</div>
+        <div class="pick-btns">${g.az ? `<a class="cta-btn" href="${amazonSearch(g.az)}" target="_blank" rel="noopener sponsored">${ja?"Amazonで見る":"View on Amazon"}</a>` : ""}${g.amazon ? `<a class="cta-btn" href="${g.amazon}" target="_blank" rel="noopener sponsored">${ja?"Amazonで見る":"View on Amazon"}</a>` : ""}${g.rakuten ? `<a class="cta-btn ${(g.amazon||g.az)?"sec":""}" href="${g.rakuten.includes("rakuten.co.jp/") && !g.rakuten.includes("afl.rakuten") ? rakutenAff(g.rakuten) : g.rakuten}" target="_blank" rel="noopener sponsored">${ja?"楽天で見る":"View on Rakuten"}</a>` : ""}</div>
       </li>`).join("");
   document.getElementById("gearContent").innerHTML = `
     <p class="gear-intro">${ja?plan.introJa:plan.introEn}</p>
-    ${pickHtml ? `<div class="section-label">${ja?"運営者のおすすめ":"My picks"}</div><ul class="picks">${pickHtml}</ul><div class="section-label">${ja?"そのほかはAmazon・楽天で探す":"Find the rest on Amazon or Rakuten"}</div>` : ""}
+    ${pickHtml ? `<div class="section-label">${ja?"運営者のおすすめ":"My picks"}</div>${plan.picksBy ? `<div class="angle-seg" role="group" aria-label="${ja?"選び方":"Pick by"}">${PICK_ANGLES.map(([k,j,e])=>`<button type="button" class="${gearState.angle===k?"sel":""}" data-angle="${k}" aria-pressed="${gearState.angle===k}">${ja?j:e}</button>`).join("")}</div>` : ""}<ul class="picks">${pickHtml}</ul><div class="section-label">${ja?"そのほかはAmazon・楽天で探す":"Find the rest on Amazon or Rakuten"}</div>` : ""}
     <ol class="gear-list">
       ${plan.items.map(it=>`
       <li class="gear-item">
